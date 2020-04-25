@@ -1,6 +1,6 @@
 --2 - Unit Functions.lua
 local version = "1.0.0";
-local UnitGUID, UnitCanAttack, tinsert, UnitCanAssist, tonumber, GetSpellInfo, UnitDebuff, UnitBuff, UnitName, UnitLevel, UnitHealth, UnitHealthMax, UnitMana, UnitManaMax, UnitExists, UnitThreatSituation, GetUnitSpeed = UnitGUID, UnitCanAttack, tinsert, UnitCanAssist, tonumber, GetSpellInfo, UnitDebuff, UnitBuff, UnitName, UnitLevel, UnitHealth, UnitHealthMax, UnitMana, UnitManaMax, UnitExists, UnitThreatSituation, GetUnitSpeed;
+local UnitGUID, UnitCanAttack, tinsert, UnitCanAssist, tonumber, GetSpellInfo, UnitDebuff, UnitBuff, UnitName, UnitLevel, UnitHealth, UnitHealthMax, UnitMana, UnitManaMax, UnitExists, UnitThreatSituation, GetUnitSpeed, UnitIsDeadOrGhost = UnitGUID, UnitCanAttack, tinsert, UnitCanAssist, tonumber, GetSpellInfo, UnitDebuff, UnitBuff, UnitName, UnitLevel, UnitHealth, UnitHealthMax, UnitMana, UnitManaMax, UnitExists, UnitThreatSituation, GetUnitSpeed, UnitIsDeadOrGhost;
 local function findand(str)
 	return str and (string.match(str, "&&") and true) or nil;
 end
@@ -573,5 +573,37 @@ ni.unit = {
 		else
 			return false
 		end
+	end,
+	unitid = function(t)
+		if tonumber(t) then
+			return tonumber((t):sub(-12, -7), 16)
+		else
+			return tonumber((UnitGUID(t)):sub(-12, -7), 16)
+		end
+	end,
+	isdummy = function(t)
+		if ni.unit.exists(t) then
+			t = ni.unit.unitid(t)
+			return ni.lists.dummies[t]
+		end
+
+		return false
+	end,
+	getttd = function(t)
+		if ni.unit.isdummy(t) then
+			return 99
+		end
+
+		if ni.unit.exists(t) and (not UnitIsDeadOrGhost(t) and UnitCanAttack("player", t) == 1) then
+			t = UnitGUID(t)
+		else
+			return -2
+		end
+
+		if ni.object[t] and ni.object[t].ttd ~= nil then
+			return ni.object[t].ttd
+		end
+
+		return 99
 	end
 };
