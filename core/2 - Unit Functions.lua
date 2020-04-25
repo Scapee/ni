@@ -582,7 +582,7 @@ ni.unit = {
 		end
 	end,
 	isdummy = function(t)
-		if ni.unit.exists(t) and ni.om.contains(t) then
+		if ni.unit.exists(t) then
 			t = ni.unit.unitid(t)
 			return ni.lists.dummies[t]
 		end

@@ -108,10 +108,10 @@ function ni.objectSetup:create(objguid, objtype, objname)
 		return UnitPower(o.guid, t);
 	end
 	function o:unit()
-		return UnitGUID(o.guid) ~= nil
+		return o.type == 3
 	end
 	function o:player()
-		return UnitIsPlayer(o.guid) ~= nil
+		return o.type == 4
 	end
 	function o:powermax(t)
 		if tonumber(t) == nil then
