@@ -180,12 +180,7 @@ function ni.objectSetup:create(objguid, objtype, objname)
 			R = r }
 		return t;
 	end
-	function o:UpdateObject()
-		local _, _, _, _, obtype = ni.unit.info(o.guid);
-		o.guid = o.guid;
-		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid);
-		o.type = o.type;
-
+	function o:calculatettd()
 		if (o:unit() or o:player()) and o:canattack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
 			if o.timeincombat == nil then
 			  o.timeincombat = GetTime()
@@ -215,7 +210,14 @@ function ni.objectSetup:create(objguid, objtype, objname)
 			if maxhp - currenthp == 0 then
 			  o.ttd = -1
 			end
-		  end
+		end
+	end
+	function o:UpdateObject()
+		local _, _, _, _, obtype = ni.unit.info(o.guid);
+		o.guid = o.guid;
+		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid);
+		o.type = o.type;
+		o:calculatettd()
 	end
 	ni.objectSetup.cache[objguid] = o;
 	return o;
