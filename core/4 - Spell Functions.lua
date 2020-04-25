@@ -174,6 +174,11 @@ ni.spell = {
 		if t == nil then
 			return;
 		end
+
+		if (ni.lists.loswhitelisted[ni.unit.unitid(t)]) then
+			return true
+		end
+
 		return ni.functions.los("player", ...);
 	end,
 	valid = function(t, spellid, facing, los, friendly)

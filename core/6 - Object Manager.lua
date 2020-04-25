@@ -1,6 +1,6 @@
 --6 - Object Manager.lua
 local version = "1.0.0";
-local tinsert, tremove, GetTime, tonumber, UnitReaction, UnitName, rawset = tinsert, tremove, GetTime, tonumber, UnitReaction, UnitName, rawset;
+local tinsert, tremove, GetTime, tonumber, UnitReaction, UnitName, rawset, UnitIsDeadOrGhost, UnitHealth, UnitHealthMax = tinsert, tremove, GetTime, tonumber, UnitReaction, UnitName, rawset, UnitIsDeadOrGhost, UnitHealth, UnitHealthMax;
 ni.object = { };
 ni.om = {
 	get = function()
@@ -107,6 +107,12 @@ function ni.objectSetup:create(objguid, objtype, objname)
 		end
 		return UnitPower(o.guid, t);
 	end
+	function o:unit()
+		return UnitGUID(o.guid) ~= nil
+	end
+	function o:player()
+		return UnitIsPlayer(o.guid) ~= nil
+	end
 	function o:powermax(t)
 		if tonumber(t) == nil then
 			t = _powerTypes[t];
@@ -179,6 +185,37 @@ function ni.objectSetup:create(objguid, objtype, objname)
 		o.guid = o.guid;
 		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid);
 		o.type = o.type;
+
+		if (o:unit() or o:player()) and o:canattack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
+			if o.timeincombat == nil then
+			  o.timeincombat = GetTime()
+			end
+
+			local currenthp = UnitHealth(o.guid)
+			local maxhp = UnitHealthMax(o.guid)
+			local diff = maxhp - currenthp
+			local duration = GetTime() - o.timeincombat
+			local _dps = diff / duration
+			local death = 0
+
+			if _dps ~= 0 then
+			  death = math.max(0, currenthp) / _dps
+			else
+			  death = 0
+			end
+			o.dps = math.floor(_dps)
+
+			if death == math.huge then
+			  o.ttd = -1
+			elseif death < 0 then
+			  o.ttd = 0
+			else
+			  o.ttd = death
+			end
+			if maxhp - currenthp == 0 then
+			  o.ttd = -1
+			end
+		  end
 	end
 	ni.objectSetup.cache[objguid] = o;
 	return o;
