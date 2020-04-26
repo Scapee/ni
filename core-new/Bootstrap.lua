@@ -1,0 +1,5 @@
+ni.frames.DelayFrame:SetScript("OnUpdate", ni.frames.DelayFrame_OnUpdate)
+ni.frames.CombatLogFrame:SetScript("OnEvent", ni.frames.CombatLogFrame_OnEvent)
+ni.frames.InterruptFrame:SetScript("OnUpdate", ni.frames.InterruptFrame_OnUpdate)
+ni.frames.GlobalFrame:SetScript("OnUpdate", ni.frames.GlobalFrame_OnUpdate)
+ni.frames.FloatingFrame:Message("Loaded")
