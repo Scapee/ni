@@ -83,7 +83,7 @@ ni.onupdate:SetScript('OnUpdate', function(self, elapsed)
 				local args = tremove(qRec, 1);
 				local id, tar = unpack(args);
 				ni.Info.update(id, true);
-				if ni.spell.available(id) then
+				if ni.spell.available(id, true) then
 					count = count - 1;
 					func(id, tar);
 				else
