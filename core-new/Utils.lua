@@ -5,6 +5,13 @@ ni.utils = {
 		end
 		return ni.functions.LoadFile(filename)
 	end,
+	LoadFiles = function(files)
+		for _, v in pairs(files) do
+			if not ni.utils.LoadFile(v) then
+				ni.debug.AddLog("Failed to load: " .. v, true)
+			end
+		end
+	end,
 	SplitStringByDelimiter = function(str, sep)
 		if sep == nil then
 			sep = "%s"
@@ -29,5 +36,8 @@ ni.utils = {
 			table.insert(t, strlwr)
 		end
 		return t
+	end,
+	FindAnd = function(str)
+		return str and (string.match(str, "&&") and true) or nil
 	end
 }

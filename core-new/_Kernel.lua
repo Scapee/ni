@@ -1,39 +1,36 @@
 local UnitClass = UnitClass
 
-local _, unitClass = UnitClass("player")
+local _, _class = UnitClass("player")
 
 ni = {}
 ni.frames = {}
 ni.vars = {}
 ni.rotations = {}
 ni.utils = {}
-ni.combat = {
-	started = false,
-	time = 0
-}
-ni.tables = {
-	bosses = {},
-	mismarkedBosses = {},
-	whitelistedLoSUnits = {},
-	blacklistedInterrupts = {},
-	whitelistedInterrupts = {},
-	whitelistedCCDebuffs = {},
-	dummies = {},
-	blacklistedAoEUnits = {},
-	delaytable = {}
-}
+ni.rotation = {}
+ni.combat = {}
+ni.tables = {}
+ni.delays = {}
 ni.debug = {}
+ni.ui = {}
 ni.unit = {}
+ni.flag = {}
+ni.buff = {}
+ni.debuff = {}
+ni.aura = {}
 ni.player = {}
+ni.rune = {}
+ni.spell = {}
+ni.power = {}
 ni.objectManager = {}
-ni.object = {}
+ni.objects = {}
 ni.members = {}
 ni.tanks = {}
-ni[unitClass] = {
+ni[_class] = {
     rotations = {},
     StartRotation = function()
         if (ni.vars.profiles.active ~= nil and ni.vars.profiles.active ~= "None") then
-            ni[unitClass].rotations[ni.vars.profiles.active].rotation()
+            ni[_class].rotations[ni.vars.profiles.active].Queue()
         end
     end
 }

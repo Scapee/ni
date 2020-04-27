@@ -1,5 +1,8 @@
 ni.vars = {
 	latency = 220,
+	interrupt = "all",
+	build = 30300,
+	debug = false,
 	hotkeys = {
 		aoe = "{aoeToggle}",
 		cd = "{cdToggle}",
@@ -22,5 +25,16 @@ ni.vars = {
 		offTank = "{offTank}",
 		offTankEnabled = false
 	},
-	interrupt = "all"
+	combat = {
+		started = false,
+		time = 0,
+		isMelee = false,
+		cd = false,
+		aoe = false,
+		casting = false
+	},
+	interrupts = {
+		whiteListed = {},
+		blackListed = {}
+	}
 }

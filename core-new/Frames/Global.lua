@@ -1,76 +1,105 @@
+local UnitClass,
+	CreateFrame,
+	GetZoneText,
+	UnitExists,
+	UnitGUID,
+	UnitAffectingCombat,
+	IsMounted,
+	UnitIsUnit,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	GetTime,
+	tremove,
+	tinsert,
+	unpack =
+	UnitClass,
+	CreateFrame,
+	GetZoneText,
+	UnitExists,
+	UnitGUID,
+	UnitAffectingCombat,
+	IsMounted,
+	UnitIsUnit,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	GetTime,
+	tremove,
+	tinsert,
+	unpack
+
 local _, _class = UnitClass("player")
 
 local lastclick = 0
-ni.frames.GlobalFrame = CreateFrame("Frame")
-ni.frames.GlobalFrame_OnUpdate = function(self, elapsed)
-	if UnitExists == nil or ni.functions.cast == nil or not GetZoneText() then
+ni.frames.Global = CreateFrame("Frame")
+ni.frames.Global_OnUpdate = function(self, elapsed)
+	if UnitExists == nil or ni.functions.Cast == nil or not GetZoneText() then
 		return true
 	end
-	if select(11, ni.unit.debuff("player", 9454)) == 9454 then
+	if select(11, ni.player.debuff(9454)) == 9454 then
 		return true
 	end
 	if ni.vars.profiles.enabled then
-		ni.rotation.AoEtoggle()
-		ni.rotation.CDtoggle()
+		ni.rotation.AoEToggle()
+		ni.rotation.CDToggle()
 	end
 	local throttle = ni.vars.latency / 1000
 	self.st = elapsed + (self.st or 0)
 	if self.st > throttle then
 		self.st = 0
 		if ni.vars.units.followEnabled then
-			if ni.om.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
+			if ni.objectManager.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
 				local unit = ni.vars.units.follow
-				local uGUID = ni.om.oGUID(unit) or UnitGUID(unit)
+				local uGUID = ni.objectManager.oGUID(unit) or UnitGUID(unit)
 				local followTar = nil
 				local distance = nil
 				if UnitAffectingCombat(uGUID) then
-					local oTar = select(6, ni.unit.info(uGUID))
+					local oTar = select(6, ni.unit.Info(uGUID))
 					if oTar ~= nil then
 						followTar = oTar
 					end
 				end
-				distance = ni.player.distance(uGUID)
+				distance = ni.player.Distance(uGUID)
 				if not IsMounted() then
-					if followTar ~= nil and ni.vars.IsMelee == true then
-						distance = ni.player.distance(followTar)
+					if followTar ~= nil and ni.vars.combat.isMelee == true then
+						distance = ni.player.Distance(followTar)
 						uGUID = followTar
 					end
 				end
 				if followTar ~= nil then
 					if not UnitIsUnit("target", followTar) then
-						ni.player.target(followTar)
+						ni.player.Target(followTar)
 					end
 				end
-				if not ni.player.isfacing(uGUID) then
-					ni.player.lookat(uGUID)
+				if not ni.player.IsFacing(uGUID) then
+					ni.player.LookAt(uGUID)
 				end
 				if
 					not UnitCastingInfo("player") and not UnitChannelInfo("player") and distance ~= nil and distance > 1 and
 						distance < 50 and
 						GetTime() - lastclick > 1.5
 				 then
-					ni.player.moveto(uGUID)
+					ni.player.MoveTo(uGUID)
 					lastclick = GetTime()
 				end
-				if distance ~= nil and distance <= 1 and ni.player.ismoving() then
-					ni.player.stopmoving()
+				if distance ~= nil and distance <= 1 and ni.player.IsMoving() then
+					ni.player.StopMoving()
 				end
 			end
 		end
 		if ni.vars.profiles.enabled then
-			if not ni.vars.RotationStarted then
-				ni.vars.RotationStarted = true
+			if not ni.rotation.started then
+				ni.rotation.started = true
 			end
 			if ni.vars.profiles.useEngine then
 				ni.members:Update()
 			end
-			if ni.player.stopmod() then
+			if ni.rotation.StopMod() then
 				return true
 			end
-			local count = #ni.spell.spellqueue
+			local count = #ni.spell.queue
 			local i = 1
 			while i <= count do
-				local qRec = tremove(ni.spell.spellqueue, i)
+				local qRec = tremove(ni.spell.queue, i)
 				local func = tremove(qRec, 1)
 				local args = tremove(qRec, 1)
 				local id, tar = unpack(args)
@@ -79,21 +108,21 @@ ni.frames.GlobalFrame_OnUpdate = function(self, elapsed)
 					count = count - 1
 					func(id, tar)
 				else
-					tinsert(ni.spell.spellqueue, i, {func, args})
+					tinsert(ni.spell.queue, i, {func, args})
 					i = i + 1
 				end
 			end
-			if #ni.spell.spellqueue == 0 then
+			if #ni.spell.queue == 0 then
 				ni.Info.update()
 			end
 			if ni.vars.profiles.active ~= "none" and ni.vars.profiles.active ~= "None" then
 				if ni[_class].rotation ~= nil then
-					ni[_class].rotation()
+					ni[_class].StartRotation()
 				end
 			end
 		else
-			if ni.vars.RotationStarted then
-				ni.vars.RotationStarted = false
+			if ni.rotation.started then
+				ni.rotation.started = false
 			end
 		end
 	end
