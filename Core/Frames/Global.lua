@@ -27,7 +27,7 @@ local UnitClass,
 	tinsert,
 	unpack
 
-local _, _class = UnitClass("player")
+local _class = UnitClass("player")
 
 local lastclick = 0
 ni.frames.Global = CreateFrame("Frame")

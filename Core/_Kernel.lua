@@ -1,6 +1,6 @@
 local UnitClass = UnitClass
 
-local _, _class = UnitClass("player")
+local _class = UnitClass("player")
 
 ni = {}
 ni.frames = {}
