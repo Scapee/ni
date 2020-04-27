@@ -27,5 +27,5 @@ local table = {
 	end
 }
 
-rawset(ni["Warlock"].rotations, "Affliction_PvE", table)
+rawset(ni["WARLOCK"].rotations, "Affliction_PvE", table)
 ni.debug.Log("Affliction Loaded")

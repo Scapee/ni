@@ -35,5 +35,9 @@ ni.utils = {
 	end,
 	FindAnd = function(str)
 		return str and (string.match(str, "&&") and true) or nil
+	end,
+	FirstCharacterUpper = function(str)
+		str = string.lower(str)
+		return str:sub(1, 1):upper() .. str:sub(2)
 	end
 }
