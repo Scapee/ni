@@ -1,5 +1,4 @@
 local files = {
-	"Core\\Internal\\Utils.lua",
 	"Core\\Internal\\Vars.lua",
 	"Core\\Internal\\Debug.lua",
 	"Core\\Internal\\Rotation.lua",
@@ -27,12 +26,14 @@ local files = {
 	"Core\\Api\\Spell.lua"
 }
 
-ni.utils.LoadFiles(files)
-
-ni.frames.Delay:SetScript("OnUpdate", ni.frames.Delay_OnUpdate)
-ni.frames.CombatLog:SetScript("OnEvent", ni.frames.CombatLog_OnEvent)
-ni.frames.Interrupt:SetScript("OnUpdate", ni.frames.Interrupt_OnUpdate)
-ni.frames.Healing:SetScript("OnEvent", ni.frames.Healing_OnUpdate)
-ni.frames.ObjectManager:SetScript("OnUpdate", ni.frames.ObjectManager_OnUpdate)
-ni.frames.Global:SetScript("OnUpdate", ni.frames.Global_OnUpdate)
-ni.frames.FloatingText:Message("Loaded")
+if ni.functions.LoadLua("Core\\Internal\\Utils.lua") then
+	if ni.utils.LoadFiles(files) then
+		ni.frames.Delay:SetScript("OnUpdate", ni.frames.Delay_OnUpdate)
+		ni.frames.CombatLog:SetScript("OnEvent", ni.frames.CombatLog_OnEvent)
+		ni.frames.Interrupt:SetScript("OnUpdate", ni.frames.Interrupt_OnUpdate)
+		ni.frames.Healing:SetScript("OnEvent", ni.frames.Healing_OnUpdate)
+		ni.frames.ObjectManager:SetScript("OnUpdate", ni.frames.ObjectManager_OnUpdate)
+		ni.frames.Global:SetScript("OnUpdate", ni.frames.Global_OnUpdate)
+		ni.frames.FloatingText:Message("Loaded")
+	end
+end
