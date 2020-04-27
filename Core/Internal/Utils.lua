@@ -8,7 +8,7 @@ ni.utils = {
 	LoadFiles = function(files)
 		for _, v in pairs(files) do
 			if not ni.utils.LoadFile(v) then
-				ni.debug.AddLog("Failed to load: " .. v, true)
+				ni.debug.Log("Failed to load: " .. v, true)
 			end
 		end
 	end,

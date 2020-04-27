@@ -190,7 +190,7 @@ function ni.objectSetup:New(objguid, objtype, objname)
 	end
 	return ni.objectSetup:Create(objguid, objtype, objname)
 end
-function ni.object:UpdateObjects()
+function ni.objects:UpdateObjects()
 	for k, v in pairs(ni.objects) do
 		if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 			if v.lastupdate == nil or GetTime() >= (v.lastupdate + (math.random(1, 12) / 100)) then
