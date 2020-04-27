@@ -125,8 +125,8 @@ ni.rotation = {
 		end
 	end,
 	AoEToggle = function()
-		if (ni.vars.profiles.enabled == false or ni.vars.combat.aoe == false) and ni.notification:IsShown() then
-			ni.notification:Hide()
+		if (ni.vars.profiles.enabled == false or ni.vars.combat.aoe == false) and ni.frames.Notification:IsShown() then
+			ni.frames.Notification:Hide()
 		end
 		if ni.rotation.AoEMod() and GetTime() - togglemod > 0.5 and ni.vars.profiles.enabled then
 			togglemod = GetTime()
@@ -134,7 +134,7 @@ ni.rotation = {
 				ni.message("Area of Effect Enabled")
 				ni.vars.combat.aoe = true
 			elseif ni.vars.combat.aoe == true then
-				ni.notification:Hide()
+				ni.frames.Notification:Hide()
 				ni.vars.combat.aoe = false
 			end
 		end
