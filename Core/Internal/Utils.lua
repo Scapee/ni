@@ -1,14 +1,15 @@
 ni.utils = {
 	LoadFile = function(filename)
 		if filename == nil then
-			return
+			return false
 		end
-		return ni.functions.LoadFile(filename)
+		return ni.functions.LoadLua(filename)
 	end,
 	LoadFiles = function(files)
 		for _, v in pairs(files) do
 			if not ni.utils.LoadFile(v) then
 				ni.debug.Log("Failed to load: " .. v, true)
+				return false;
 			end
 		end
 	end,
