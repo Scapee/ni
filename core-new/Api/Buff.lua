@@ -1,3 +1,5 @@
+local UnitBuff, tContains, GetSpellInfo = UnitBuff, tContains, GetSpellInfo
+
 ni.buff = {
 	HasType = function(t, str)
 		if not ni.unit.Exists(t) then

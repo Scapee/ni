@@ -1,3 +1,5 @@
+local GetRuneCooldown, GetRuneType, GetTime = GetRuneCooldown, GetRuneType, GetTime
+
 ni.rune = {
 	Cd = function(rune)
 		local s, d, i = GetRuneCooldown(rune)

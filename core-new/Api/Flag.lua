@@ -6,7 +6,7 @@ ni.flag = {
 	end,
 	DynamicFlags = function(t)
 		if t ~= nil then
-			return ni.functions.UnityDynamicFlags(t)
+			return ni.functions.UnitDynamicFlags(t)
 		end
 	end,
 	IsTappedByAllThreatList = function(t)

@@ -47,7 +47,7 @@ ni.frames.Global_OnUpdate = function(self, elapsed)
 	if self.st > throttle then
 		self.st = 0
 		if ni.vars.units.followEnabled then
-			if ni.objectManager.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
+			if ni.objectManager.Contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
 				local unit = ni.vars.units.follow
 				local uGUID = ni.objectManager.oGUID(unit) or UnitGUID(unit)
 				local followTar = nil

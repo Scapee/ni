@@ -1,3 +1,5 @@
+local UnitDebuff, tContains, GetSpellInfo = UnitDebuff, tContains, GetSpellInfo
+
 ni.debuff = {
 	HasType = function(t, str)
 		if not ni.unit.Exists(t) then

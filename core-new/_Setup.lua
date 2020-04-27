@@ -4,10 +4,14 @@ local files = {
 	"Core\\Debug.lua",
 	"Core\\Rotation.lua",
 	"Core\\Frames\\UI.lua",
-	"Core\\Frames\\UI.lua",
+	"Core\\Frames\\CombatLog.lua",
 	"Core\\Frames\\Delay.lua",
 	"Core\\Frames\\Interrupt.lua",
+	"Core\\Frames\\ObjectManager.lua",
 	"Core\\Frames\\Global.lua",
+	"Core\\Engines\\TimeToDie.lua",
+	"Core\\Engines\\Healing.lua",
+	"Core\\Engines\\ObjectManager.lua",
 	"Core\\Tables\\Dummies.lua",
 	"Core\\Tables\\Bosses.lua",
 	"Core\\Tables\\MismarkedBosses.lua",
@@ -15,9 +19,6 @@ local files = {
 	"Core\\Tables\\BlacklistedInterrupts.lua",
 	"Core\\Tables\\WhitelistedCCDebuffs.lua",
 	"Core\\Tables\\WhitelistedInterrupts.lua",
-	"Core\\Engines\\TimeToDie.lua",
-	"Core\\Engines\\Healing.lua",
-	"Core\\Engines\\ObjectManager.lua",
 	"Core\\Api\\Flag.lua",
 	"Core\\Api\\Buff.lua",
 	"Core\\Api\\Debuff.lua",
@@ -34,5 +35,6 @@ ni.utils.LoadFiles(files)
 ni.frames.Delay:SetScript("OnUpdate", ni.frames.Delay_OnUpdate)
 ni.frames.CombatLog:SetScript("OnEvent", ni.frames.CombatLog_OnEvent)
 ni.frames.Interrupt:SetScript("OnUpdate", ni.frames.Interrupt_OnUpdate)
+ni.frames.ObjectManager:SetScript("OnUpdate", ni.frames.ObjectManager_OnUpdate)
 ni.frames.Global:SetScript("OnUpdate", ni.frames.Global_OnUpdate)
 ni.frames.FloatingText:Message("Loaded")

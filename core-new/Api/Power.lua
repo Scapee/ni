@@ -1,3 +1,5 @@
+local UnitPower, UnitPowerMax = UnitPower, UnitPowerMax
+
 ni.power = {
 	types = {
 		["mana"] = 0,

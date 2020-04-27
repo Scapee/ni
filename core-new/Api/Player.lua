@@ -1,3 +1,28 @@
+local GetGlyphSocketInfo,
+	GetContainerNumSlots,
+	GetContainerItemID,
+	GetItemSpell,
+	GetInventoryItemID,
+	GetItemCooldown,
+	GetSpellCooldown,
+	GetTime,
+	UnitClass,
+	IsFalling,
+	UnitExists,
+	IsSpellInRange =
+	GetGlyphSocketInfo,
+	GetContainerNumSlots,
+	GetContainerItemID,
+	GetItemSpell,
+	GetInventoryItemID,
+	GetItemCooldown,
+	GetSpellCooldown,
+	GetTime,
+	UnitClass,
+	IsFalling,
+	UnitExists,
+	IsSpellInRange
+
 ni.player = {
 	DebuffType = function(str)
 		return ni.debuff.HasType("player", str)
@@ -101,14 +126,8 @@ ni.player = {
 		end
 		ni.functions.Interact(t)
 	end,
-	IsCasting = function(t)
-		local result = false
-		local name, _, _, _, _, _, _, id = UnitCastingInfo("player")
-		if name and id == t then
-			result = true
-		end
-
-		return result
+	IsCasting = function()
+		return ni.unit.IsCasting("player")
 	end,
 	HasGlyph = function(glyphID)
 		local hasglyph = false

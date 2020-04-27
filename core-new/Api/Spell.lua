@@ -1,3 +1,52 @@
+local GetSpellCooldown,
+	GetTime,
+	GetSpellInfo,
+	GetNetStats,
+	tonumber,
+	UnitIsDeadOrGhost,
+	UnitCanAttack,
+	IsSpellInRange,
+	IsSpellKnown,
+	UnitPower,
+	UnitClass,
+	GetShapeshiftForm,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	tContains,
+	random,
+	sin,
+	cos,
+	UnitHealth,
+	sqrt,
+	tremove,
+	tinsert,
+	StrafeLeftStart,
+	StrafeLeftStop =
+	GetSpellCooldown,
+	GetTime,
+	GetSpellInfo,
+	GetNetStats,
+	tonumber,
+	UnitIsDeadOrGhost,
+	UnitCanAttack,
+	IsSpellInRange,
+	IsSpellKnown,
+	UnitPower,
+	UnitClass,
+	GetShapeshiftForm,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	tContains,
+	random,
+	sin,
+	cos,
+	UnitHealth,
+	sqrt,
+	tremove,
+	tinsert,
+	StrafeLeftStart,
+	StrafeLeftStop
+
 ni.spell = {
 	queue = {},
 	Id = function(s)
@@ -26,6 +75,7 @@ ni.spell = {
 		local _, d = GetSpellCooldown(61304)
 		return d ~= 0
 	end,
+	-- TODO: use ni.power instead of calculating inside this function
 	Available = function(id, stutter)
 		local stutter = true and stutter or true
 

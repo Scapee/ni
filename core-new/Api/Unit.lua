@@ -2,36 +2,28 @@ local UnitGUID,
 	UnitCanAttack,
 	tinsert,
 	tonumber,
-	GetSpellInfo,
-	UnitDebuff,
-	UnitBuff,
-	UnitName,
 	UnitLevel,
 	UnitHealth,
 	UnitHealthMax,
-	UnitMana,
-	UnitManaMax,
 	UnitExists,
 	UnitThreatSituation,
 	GetUnitSpeed,
-	UnitIsDeadOrGhost =
+	UnitIsDeadOrGhost,
+	UnitReaction,
+	UnitCastingInfo =
 	UnitGUID,
 	UnitCanAttack,
 	tinsert,
 	tonumber,
-	GetSpellInfo,
-	UnitDebuff,
-	UnitBuff,
-	UnitName,
 	UnitLevel,
 	UnitHealth,
 	UnitHealthMax,
-	UnitMana,
-	UnitManaMax,
 	UnitExists,
 	UnitThreatSituation,
 	GetUnitSpeed,
-	UnitIsDeadOrGhost
+	UnitIsDeadOrGhost,
+	UnitReaction,
+	UnitCastingInfo
 
 ni.unit = {
 	creatureTypes = {
@@ -67,7 +59,7 @@ ni.unit = {
 		if unit then
 			local t = {}
 			local guid = UnitGUID(unit)
-			for k, v in pairs(ni.object) do
+			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 					local creator = v:creator()
 					if creator == guid then
@@ -150,8 +142,8 @@ ni.unit = {
 			return -2
 		end
 
-		if ni.object[t] and ni.object[t].ttd ~= nil then
-			return ni.object[t].ttd
+		if ni.objects[t] and ni.objects[t].ttd ~= nil then
+			return ni.objects[t].ttd
 		end
 
 		return 99
@@ -189,7 +181,7 @@ ni.unit = {
 		local tmp = {}
 		local unit = true and UnitGUID(t) or t
 		if unit then
-			for k, v in pairs(ni.object) do
+			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 					if k ~= unit and v:canattack() and not UnitIsDeadOrGhost(k) then
 						local distance = v:distance(unit)
@@ -206,7 +198,7 @@ ni.unit = {
 		local tmp = {}
 		local unit = true and UnitGUID(t) or t
 		if unit then
-			for k, v in pairs(ni.object) do
+			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 					if k ~= unit and v:canassist() and not UnitIsDeadOrGhost(k) then
 						local distance = v:distance(unit)
@@ -226,7 +218,7 @@ ni.unit = {
 
 		if unit then
 			if not f then
-				for k, v in pairs(ni.object) do
+				for k, v in pairs(ni.objects) do
 					if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 						if k ~= unit and UnitReaction(unit, k) ~= nil and UnitReaction(unit, k) <= 4 and not UnitIsDeadOrGhost(k) then
 							local target = v:target()
@@ -237,7 +229,7 @@ ni.unit = {
 					end
 				end
 			else
-				for k, v in pairs(ni.object) do
+				for k, v in pairs(ni.objects) do
 					if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 						if k ~= unit and UnitReaction(unit, k) ~= nil and UnitReaction(unit, k) > 4 then
 							local target = v:target()
@@ -250,5 +242,15 @@ ni.unit = {
 			end
 		end
 		return returntable, #returntable
+	end,
+	-- TODO: add string, guid, id
+	IsCasting = function(t)
+		local result = false
+		local name, _, _, _, _, _, _, id = UnitCastingInfo(t)
+		if name and id == t then
+			result = true
+		end
+
+		return result
 	end
 }
