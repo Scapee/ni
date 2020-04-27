@@ -1,40 +1,40 @@
-local CreateFrame,
-	UIFrameFadeOut,
-	GetMouseFocus,
-	ActionButton_GetPagedID,
-	ChatFrame1,
-	ActionButton_CalculateAction,
-	HasAction,
-	GetActionInfo =
-	CreateFrame,
-	UIFrameFadeOut,
-	GetMouseFocus,
-	ActionButton_GetPagedID,
-	ChatFrame1,
-	ActionButton_CalculateAction,
-	HasAction,
-	GetActionInfo
+local createFrame,
+	uIFrameFadeOut,
+	getMouseFocus,
+	actionButton_GetPagedID,
+	chatFrame1,
+	actionButton_CalculateAction,
+	hasAction,
+	getActionInfo =
+	createFrame,
+	uIFrameFadeOut,
+	getMouseFocus,
+	actionButton_GetPagedID,
+	chatFrame1,
+	actionButton_CalculateAction,
+	hasAction,
+	getActionInfo
 
-ni.frames.Notification = CreateFrame("Frame", nil, ChatFrame1)
-ni.frames.Notification:SetSize(ChatFrame1:GetWidth(), 30)
-ni.frames.Notification:Hide()
-ni.frames.Notification:SetPoint("TOP", 0, 0)
-ni.frames.Notification.text = ni.frames.Notification:CreateFontString(nil, "OVERLAY", "MovieSubtitleFont")
-ni.frames.Notification.text:SetAllPoints()
-ni.frames.Notification.texture = ni.frames.Notification:CreateTexture()
-ni.frames.Notification.texture:SetAllPoints()
-ni.frames.Notification.texture:SetTexture(0, 0, 0, .50)
+ni.frames.notification = createFrame("Frame", nil, chatFrame1)
+ni.frames.notification:setSize(ChatFrame1:getWidth(), 30)
+ni.frames.notification:hide()
+ni.frames.notification:setPoint("TOP", 0, 0)
+ni.frames.notification.text = ni.frames.notification:createFontString(nil, "OVERLAY", "MovieSubtitleFont")
+ni.frames.notification.text:setAllPoints()
+ni.frames.notification.texture = ni.frames.notification:createTexture()
+ni.frames.notification.texture:setAllPoints()
+ni.frames.notification.texture:setTexture(0, 0, 0, .50)
 
-ni.frames.SpellQueueHolder = CreateFrame("Frame")
-ni.frames.SpellQueueHolder:ClearAllPoints()
-ni.frames.SpellQueueHolder:SetHeight(30)
-ni.frames.SpellQueueHolder:SetWidth(275)
-ni.frames.SpellQueueHolder:SetMovable(true)
-ni.frames.SpellQueueHolder:EnableMouse(true)
-ni.frames.SpellQueueHolder:RegisterForDrag("LeftButton")
-ni.frames.SpellQueueHolder:SetScript("OnDragStart", ni.frames.SpellQueueHolder.StartMoving)
-ni.frames.SpellQueueHolder:SetScript("OnDragStop", ni.frames.SpellQueueHolder.StopMovingOrSizing)
-ni.frames.SpellQueueHolder:SetBackdrop(
+ni.frames.spellQueueHolder = createFrame("Frame")
+ni.frames.spellQueueHolder:clearAllPoints()
+ni.frames.spellQueueHolder:setHeight(30)
+ni.frames.spellQueueHolder:setWidth(275)
+ni.frames.spellQueueHolder:setMovable(true)
+ni.frames.spellQueueHolder:enableMouse(true)
+ni.frames.spellQueueHolder:registerForDrag("LeftButton")
+ni.frames.spellQueueHolder:setScript("OnDragStart", ni.frames.spellQueueHolder.startMoving)
+ni.frames.spellQueueHolder:setScript("OnDragStop", ni.frames.spellQueueHolder.stopMovingOrSizing)
+ni.frames.spellQueueHolder:setBackdrop(
 	{
 		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -44,87 +44,87 @@ ni.frames.SpellQueueHolder:SetBackdrop(
 		insets = {left = 4, right = 4, top = 4, bottom = 4}
 	}
 )
-ni.frames.SpellQueueHolder:SetBackdropColor(0, 0, 0, 1)
-ni.frames.SpellQueueHolder:SetPoint("CENTER", UIParent, "BOTTOM", 0, 130)
-ni.frames.SpellQueueHolder:Hide()
+ni.frames.spellQueueHolder:setBackdropColor(0, 0, 0, 1)
+ni.frames.spellQueueHolder:setPoint("CENTER", uIParent, "BOTTOM", 0, 130)
+ni.frames.spellQueueHolder:hide()
 
-ni.frames.SpellQueue = CreateFrame("Frame", nil, ni.frames.SpellQueueHolder)
-ni.frames.SpellQueue:ClearAllPoints()
-ni.frames.SpellQueue:SetHeight(20)
-ni.frames.SpellQueue:SetWidth(200)
-ni.frames.SpellQueue:Show()
-ni.frames.SpellQueue.text = ni.frames.SpellQueue:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
-ni.frames.SpellQueue.text:SetAllPoints()
-ni.frames.SpellQueue.text:SetJustifyV("MIDDLE")
-ni.frames.SpellQueue.text:SetJustifyH("CENTER")
-ni.frames.SpellQueue.text:SetText("\124cFFFFFFFFQueued Ability: \124cFF15E615None")
-ni.frames.SpellQueue:SetPoint("CENTER", ni.frames.SpellQueueHolder, 0, 0)
-ni.frames.SpellQueue.Update = function(str, bool)
+ni.frames.spellQueue = createFrame("Frame", nil, ni.frames.spellQueueHolder)
+ni.frames.spellQueue:clearAllPoints()
+ni.frames.spellQueue:setHeight(20)
+ni.frames.spellQueue:setWidth(200)
+ni.frames.spellQueue:show()
+ni.frames.spellQueue.text = ni.frames.spellQueue:createFontString(nil, "BACKGROUND", "GameFontNormal")
+ni.frames.spellQueue.text:setAllPoints()
+ni.frames.spellQueue.text:setJustifyV("MIDDLE")
+ni.frames.spellQueue.text:setJustifyH("CENTER")
+ni.frames.spellQueue.text:setText("\124cFFFFFFFFQueued ability: \124cFF15E615None")
+ni.frames.spellQueue:setPoint("CENTER", ni.frames.spellQueueHolder, 0, 0)
+ni.frames.spellQueue.update = function(str, bool)
 	local bool = true and bool or false
 
 	if bool then
-		if ni.frames.SpellQueueHolder:IsShown() == nil then
-			ni.frames.SpellQueueHolder:Show()
+		if ni.frames.spellQueueHolder:isShown() == nil then
+			ni.frames.spellQueueHolder:show()
 		end
-		ni.frames.SpellQueue.text:SetText("\124cFFFFFFFFQueued Ability: \124cFF15E615" .. GetSpellInfo(str))
+		ni.frames.spellQueue.text:setText("\124cFFFFFFFFQueued ability: \124cFF15E615" .. getSpellInfo(str))
 	else
-		ni.frames.SpellQueue.text:SetText("\124cFFFFFFFFQueued Ability: \124cFF15E615None")
-		if ni.frames.SpellQueueHolder:IsShown() == 1 then
-			ni.frames.SpellQueueHolder:Hide()
+		ni.frames.spellQueue.text:setText("\124cFFFFFFFFQueued ability: \124cFF15E615None")
+		if ni.frames.spellQueueHolder:isShown() == 1 then
+			ni.frames.spellQueueHolder:hide()
 		end
 	end
 end
 
-ni.frames.FloatingText = CreateFrame("Frame")
-ni.frames.FloatingText:SetSize(400, 30)
-ni.frames.FloatingText:SetAlpha(0)
-ni.frames.FloatingText:SetPoint("CENTER", 0, 80)
-ni.frames.FloatingText.text = ni.frames.FloatingText:CreateFontString(nil, "OVERLAY", "MovieSubtitleFont")
-ni.frames.FloatingText.text:SetAllPoints()
-ni.frames.FloatingText.texture = ni.frames.FloatingText:CreateTexture()
-ni.frames.FloatingText.texture:SetAllPoints()
-function ni.frames.FloatingText:Message(message)
-	self.text:SetText(message)
-	UIFrameFadeOut(self, 2.5, 1, 0)
+ni.frames.floatingText = createFrame("Frame")
+ni.frames.floatingText:setSize(400, 30)
+ni.frames.floatingText:setAlpha(0)
+ni.frames.floatingText:setPoint("CENTER", 0, 80)
+ni.frames.floatingText.text = ni.frames.floatingText:createFontString(nil, "OVERLAY", "MovieSubtitleFont")
+ni.frames.floatingText.text:setAllPoints()
+ni.frames.floatingText.texture = ni.frames.floatingText:createTexture()
+ni.frames.floatingText.texture:setAllPoints()
+function ni.frames.floatingText:message(message)
+	self.text:setText(message)
+	uIFrameFadeOut(self, 2.5, 1, 0)
 end
 
 ni.showstatus = function(str)
 	if ni.vars.profiles.enabled then
-		ni.frames.FloatingText:Message("\124cff00ff00" .. str)
+		ni.frames.floatingText:message("\124cff00ff00" .. str)
 	else
-		ni.frames.FloatingText:Message("\124cffff0000" .. str)
+		ni.frames.floatingText:message("\124cffff0000" .. str)
 	end
 end
 
 ni.showintstatus = function()
 	if ni.vars.profiles.interrupt then
-		ni.frames.FloatingText:Message("Interrupts: \124cff00ff00Enabled")
+		ni.frames.floatingText:message("Interrupts: \124cff00ff00Enabled")
 	else
-		ni.frames.FloatingText:Message("Interrupts: \124cffff0000Disabled")
+		ni.frames.floatingText:message("Interrupts: \124cffff0000Disabled")
 	end
 end
 
 ni.updatefollow = function(enabled)
 	if enabled then
-		ni.frames.FloatingText:Message("Auto follow: \124cff00ff00Enabled")
+		ni.frames.floatingText:message("Auto follow: \124cff00ff00Enabled")
 	else
-		ni.frames.FloatingText:Message("Auto follow: \124cffff0000Disabled")
+		ni.frames.floatingText:message("Auto follow: \124cffff0000Disabled")
 	end
 end
 
 ni.message = function(message)
-	ni.frames.Notification.text:SetText(message)
-	ni.frames.Notification:Show()
+	ni.frames.notification.text:setText(message)
+	ni.frames.notification:show()
 end
 
 ni.getSpellIdFromActionBar = function()
-	local focus = GetMouseFocus():GetName()
+	local focus = getMouseFocus():getName()
 	if string.match(focus, "Button") then
 		local button = _G[focus]
 		local slot =
-			ActionButton_GetPagedID(button) or ActionButton_CalculateAction(button) or button:GetAttribute("action") or 0
-		if HasAction(slot) then
-			local aType, aID, _, aMaxID = GetActionInfo(slot)
+			actionButton_GetPagedID(button) or actionButton_CalculateAction(button) or button:getAttribute("action") or 0
+		if hasAction(slot) then
+			local aType, aID, _, aMaxID = getActionInfo(slot)
 			if aType == "spell" then
 				return aMaxID ~= nil and aMaxID or aID
 			end

@@ -1,4 +1,4 @@
-local UnitPower, UnitPowerMax = UnitPower, UnitPowerMax
+local unitPower, unitPowerMax = unitPower, unitPowerMax
 
 ni.power = {
 	types = {
@@ -19,25 +19,25 @@ ni.power = {
 		burningembers = 14,
 		demonicfury = 15
 	},
-	CurrentPercent = function(t, type)
+	currentPercent = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
 
-		return 100 * UnitPower(t, type) / UnitPower(t, type)
+		return 100 * unitPower(t, type) / unitPower(t, type)
 	end,
-	Max = function(t, type)
+	max = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
 
-		return UnitPowerMax(t, type)
+		return unitPowerMax(t, type)
 	end,
-	IsMax = function(t, type)
+	isMax = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
 
-		return UnitPower(t, type) == UnitPowerMax(t, type)
+		return unitPower(t, type) == unitPowerMax(t, type)
 	end
 }

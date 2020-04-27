@@ -9,12 +9,12 @@ local priorities = {
 local abilities = {
 	["Print Hello"] = function()
 		local _hello = hello
-		ni.debug.Print(_hello)
+		ni.debug.print(_hello)
 	end
 }
 
 local table = {
-	Start = function()
+	start = function()
 		local _priorities = priorities
 		local _abilities = abilities
 

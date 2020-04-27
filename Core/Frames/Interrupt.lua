@@ -1,18 +1,18 @@
-local GetFramerate, CreateFrame = GetFramerate, CreateFrame
+local getFramerate, createFrame = getFramerate, createFrame
 
-ni.frames.Interrupt = CreateFrame("frame")
-ni.frames.Interrupt_OnUpdate = function(self, elapsed)
+ni.frames.interrupt = createFrame("frame")
+ni.frames.interrupt_OnUpdate = function(self, elapsed)
 	if ni.vars.profiles.interrupt then
-		local throttle = 1 / GetFramerate()
+		local throttle = 1 / getFramerate()
 		self.st = elapsed + (self.st or 0)
 		if self.st > throttle then
 			self.st = 0
-			if ni.spell.ShouldInterrupt("target") then
-				ni.spell.CastInterrupt("target")
+			if ni.spell.shouldInterrupt("target") then
+				ni.spell.castInterrupt("target")
 				return true
 			end
-			if ni.spell.ShouldInterrupt("focus") then
-				ni.spell.CastInterrupt("focus")
+			if ni.spell.shouldInterrupt("focus") then
+				ni.spell.castInterrupt("focus")
 				return true
 			end
 		end

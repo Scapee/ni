@@ -1,6 +1,6 @@
-local UnitClass = UnitClass
+local unitClass = unitClass
 
-local _, _class = UnitClass("player")
+local _, _class = unitClass("player")
 
 ni = {}
 ni.frames = {}
@@ -24,40 +24,40 @@ ni.members = {}
 ni.tanks = {}
 ni[_class] = {
     rotations = {},
-    StartRotation = function()
+    startRotation = function()
         if (ni.vars.profiles.active ~= nil and ni.vars.profiles.active ~= "None") then
-            ni[_class].rotations[ni.vars.profiles.active].Start()
+            ni[_class].rotations[ni.vars.profiles.active].start()
         end
     end
 }
 ni.functions = {
-	AddLog = %%AddLog%%,
-	Popup = %%PopUp%%,
-	LoadLua = %%LoadFile%%,
-	Test = %%Test%%,
-	ObjectExists = %%ObjectExists%%,
-	LoS = %%LoS%%,
-	UnitCreator = %%UnitCreator%%,
-	CreatureType = %%CreatureType%%,
-	CombatReach = %%CombatReach%%,
-	UnitFlags = %%UnitFlags%%,
-	UnitDynamicFlags = %%UnitDynamicFlags%%,
-	ObjectInfo = %%ObjectInfo%%,
-	IsFacing = %%IsFacing%%,
-	GetDistance = %%GetDistance%%,
-	IsBehind = %%IsBehind%%,
-	HasAura = %%HasAura%%,
-	MoveTo = %%MoveTo%%,
-	ClickAt = %%ClickAt%%,
-	StopMoving = %%StopMoving%%,
-	LookAt = %%LookAt%%,
-	SetTarget = %%SetTarget%%,
-	RunText = %%RunText%%,
-	Item = %%Item%%,
-	InventoryItem = %%InventoryItem%%,
-	Interact = %%Interact%%,
-	Cast = %%Cast%%,
-	GetSpellID = %%GetSpellID%%,
-	StopCasting = %%StopCasting%%,
-	GetObjectManager = %%GetOM%%
+	addLog = %%AddLog%%,
+	popup = %%PopUp%%,
+	loadLua = %%LoadFile%%,
+	test = %%Test%%,
+	objectExists = %%ObjectExists%%,
+	los = %%LoS%%,
+	unitCreator = %%UnitCreator%%,
+	creatureType = %%CreatureType%%,
+	combatReach = %%CombatReach%%,
+	unitFlags = %%UnitFlags%%,
+	unitDynamicFlags = %%UnitDynamicFlags%%,
+	objectInfo = %%ObjectInfo%%,
+	isFacing = %%IsFacing%%,
+	getDistance = %%GetDistance%%,
+	isBehind = %%IsBehind%%,
+	hasAura = %%HasAura%%,
+	moveTo = %%MoveTo%%,
+	clickAt = %%ClickAt%%,
+	stopMoving = %%StopMoving%%,
+	lookAt = %%LookAt%%,
+	setTarget = %%SetTarget%%,
+	runText = %%RunText%%,
+	item = %%Item%%,
+	inventoryItem = %%InventoryItem%%,
+	interact = %%Interact%%,
+	cast = %%Cast%%,
+	getSpellID = %%GetSpellID%%,
+	stopCasting = %%StopCasting%%,
+	getObjectManager = %%GetOM%%
 }

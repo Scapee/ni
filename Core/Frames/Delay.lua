@@ -1,7 +1,7 @@
-local CreateFrame, unpack, tremove, tinsert = CreateFrame, unpack, tremove, tinsert
+local createFrame, unpack, tremove, tinsert = createFrame, unpack, tremove, tinsert
 
-ni.frames.Delay = CreateFrame("Frame")
-ni.frames.Delay_OnUpdate = function(self, elapsed)
+ni.frames.delay = createFrame("Frame")
+ni.frames.delay_OnUpdate = function(self, elapsed)
 	local count = #ni.delays
 	local i = 1
 	while i <= count do

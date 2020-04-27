@@ -1,6 +1,6 @@
-local GetBuildInfo = GetBuildInfo
+local getBuildInfo = getBuildInfo
 
-local build = select(4, GetBuildInfo())
+local build = select(4, getBuildInfo())
 
 ni.vars = {
 	latency = 220,

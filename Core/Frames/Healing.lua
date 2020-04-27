@@ -1,14 +1,14 @@
-local CreateFrame = CreateFrame
+local createFrame = createFrame
 
-ni.frames.Healing = CreateFrame("frame", nil)
-ni.frames.Healing:RegisterEvent("PARTY_MEMBERS_CHANGED")
-ni.frames.Healing:RegisterEvent("RAID_ROSTER_UPDATE")
-ni.frames.Healing:RegisterEvent("GROUP_ROSTER_UPDATE")
-ni.frames.Healing:RegisterEvent("PARTY_CONVERTED_TO_RAID")
-ni.frames.Healing:RegisterEvent("ZONE_CHANGED")
-ni.frames.Healing:RegisterEvent("PLAYER_ENTERING_WORLD")
-ni.frames.Healing_OnUpdate = function()
+ni.frames.healing = createFrame("frame", nil)
+ni.frames.healing:registerEvent("PARTY_MEMBERS_CHANGED")
+ni.frames.healing:registerEvent("RAID_ROSTER_UPDATE")
+ni.frames.healing:registerEvent("GROUP_ROSTER_UPDATE")
+ni.frames.healing:registerEvent("PARTY_CONVERTED_TO_RAID")
+ni.frames.healing:registerEvent("ZONE_CHANGED")
+ni.frames.healing:registerEvent("PLAYER_ENTERING_WORLD")
+ni.frames.healing_OnUpdate = function()
 	table.wipe(ni.members)
 	table.wipe(ni.memberSetup.cache)
-	ni.SetupTables()
+	ni.setupTables()
 end

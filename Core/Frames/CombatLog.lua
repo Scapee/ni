@@ -1,21 +1,21 @@
-local UnitName, GetTime, CreateFrame = UnitName, GetTime, CreateFrame
+local unitName, getTime, createFrame = unitName, getTime, createFrame
 
-ni.frames.CombatLog = CreateFrame("Frame")
-ni.frames.CombatLog:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_SENT")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_STOP")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_FAILED")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
-ni.frames.CombatLog:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
-ni.frames.CombatLog:RegisterEvent("PLAYER_REGEN_ENABLED")
-ni.frames.CombatLog:RegisterEvent("PLAYER_REGEN_DISABLED")
-ni.frames.CombatLog_OnEvent = function(self, event, ...)
+ni.frames.combatLog = createFrame("Frame")
+ni.frames.combatLog:registerEvent("COMBAT_LOG_EVENT_UNFILTERED")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_SUCCEEDED")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_SENT")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_STOP")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_FAILED")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_FAILED_QUIET")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_INTERRUPTED")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_CHANNEL_START")
+ni.frames.combatLog:registerEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+ni.frames.combatLog:registerEvent("PLAYER_REGEN_ENABLED")
+ni.frames.combatLog:registerEvent("PLAYER_REGEN_DISABLED")
+ni.frames.combatLog_OnEvent = function(self, event, ...)
 	if event == "PLAYER_REGEN_DISABLED" then
 		ni.vars.combat.started = true
-		ni.vars.combat.time = GetTime()
+		ni.vars.combat.time = getTime()
 	end
 	if event == "PLAYER_REGEN_ENABLED" then
 		ni.vars.combat.started = false
@@ -43,7 +43,7 @@ ni.frames.CombatLog_OnEvent = function(self, event, ...)
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		local _, subevent, _, source, _, _, dest, _, spellID, spellName = ...
-		if source == UnitName("player") then
+		if source == unitName("player") then
 			if subevent == "SPELL_CAST_SUCCESS" or subevent == "SPELL_CAST_FAILED" then
 				if ni.vars.combat.casting then
 					ni.vars.combat.casting = false

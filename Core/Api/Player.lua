@@ -1,154 +1,154 @@
-local GetGlyphSocketInfo,
-	GetContainerNumSlots,
-	GetContainerItemID,
-	GetItemSpell,
-	GetInventoryItemID,
-	GetItemCooldown,
-	GetSpellCooldown,
-	GetTime,
-	UnitClass,
-	IsFalling,
-	UnitExists,
-	IsSpellInRange =
-	GetGlyphSocketInfo,
-	GetContainerNumSlots,
-	GetContainerItemID,
-	GetItemSpell,
-	GetInventoryItemID,
-	GetItemCooldown,
-	GetSpellCooldown,
-	GetTime,
-	UnitClass,
-	IsFalling,
-	UnitExists,
-	IsSpellInRange
+local getGlyphSocketInfo,
+	getContainerNumSlots,
+	getContainerItemID,
+	getItemSpell,
+	getInventoryItemID,
+	getItemCooldown,
+	getSpellCooldown,
+	getTime,
+	unitClass,
+	isFalling,
+	unitExists,
+	isSpellInRange =
+	getGlyphSocketInfo,
+	getContainerNumSlots,
+	getContainerItemID,
+	getItemSpell,
+	getInventoryItemID,
+	getItemCooldown,
+	getSpellCooldown,
+	getTime,
+	unitClass,
+	isFalling,
+	unitExists,
+	isSpellInRange
 
 ni.player = {
-	DebuffType = function(str)
-		return ni.unit.DebuffType("player", str)
+	debuffType = function(str)
+		return ni.unit.debuffType("player", str)
 	end,
-	BuffType = function(str)
-		return ni.unit.BuffType("player", str)
+	buffType = function(str)
+		return ni.unit.buffType("player", str)
 	end,
-	Debuff = function(spellID, caster, exact)
-		return ni.unit.Debuff("player", spellID, caster, exact)
+	debuff = function(spellID, caster, exact)
+		return ni.unit.debuff("player", spellID, caster, exact)
 	end,
-	Debuffs = function(spellIDs, caster)
-		return ni.unit.Debuffs("player", spellIDs, caster)
+	debuffs = function(spellIDs, caster)
+		return ni.unit.debuffs("player", spellIDs, caster)
 	end,
-	Buff = function(spellID, caster, exact)
-		return ni.unit.Buff("player", spellID, caster, exact)
+	buff = function(spellID, caster, exact)
+		return ni.unit.buff("player", spellID, caster, exact)
 	end,
-	Buffs = function(spellIDs, caster)
-		return ni.unit.Buffs("player", spellIDs, caster)
+	buffs = function(spellIDs, caster)
+		return ni.unit.buffs("player", spellIDs, caster)
 	end,
-	Aura = function(spellID)
-		return ni.unit.Aura("player", spellID)
+	aura = function(spellID)
+		return ni.unit.aura("player", spellID)
 	end,
-	IsFacing = function(t)
-		return ni.unit.IsFacing("player", t)
+	isFacing = function(t)
+		return ni.unit.isFacing("player", t)
 	end,
-	LoS = function(t)
-		return ni.unit.LoS("player", t)
+	loS = function(t)
+		return ni.unit.loS("player", t)
 	end,
-	Creations = function()
-		return ni.unit.Creations("player")
+	creations = function()
+		return ni.unit.creations("player")
 	end,
-	IsBehind = function(t)
-		return ni.unit.IsBehind("player", t)
+	isBehind = function(t)
+		return ni.unit.isBehind("player", t)
 	end,
-	UnitsTargeting = function(f)
+	unitsTargeting = function(f)
 		local f = f and true or false
-		return ni.unit.UnitsTargeting("player", f)
+		return ni.unit.unitsTargeting("player", f)
 	end,
-	Distance = function(t)
-		return ni.unit.Distance("player", t)
+	distance = function(t)
+		return ni.unit.distance("player", t)
 	end,
-	EnemiesInRange = function(f)
-		return ni.unit.EnemiesInRange("player", f)
+	enemiesInRange = function(f)
+		return ni.unit.enemiesInRange("player", f)
 	end,
-	FriendsInRange = function(f)
-		return ni.unit.FriendsInRange("player", f)
+	friendsInRange = function(f)
+		return ni.unit.friendsInRange("player", f)
 	end,
-	MoveTo = function(...)
+	moveTo = function(...)
 		local f = ...
 		if f == nil then
 			return
 		end
-		ni.functions.MoveTo(...)
+		ni.functions.moveTo(...)
 	end,
-	ClickTerrain = function(...)
+	clickTerrain = function(...)
 		local f = ...
 		if f == nil then
 			return
 		end
-		ni.functions.ClickAt(...)
+		ni.functions.clickAt(...)
 	end,
-	StopMoving = function()
-		ni.functions.StopMoving()
+	stopMoving = function()
+		ni.functions.stopMoving()
 	end,
-	LookAt = function(t, inv)
+	lookAt = function(t, inv)
 		if t == nil then
 			return
 		end
-		ni.functions.LookAt(t, inv)
+		ni.functions.lookAt(t, inv)
 	end,
-	Target = function(t)
+	target = function(t)
 		if t == nil then
 			return
 		end
-		ni.functions.SetTarget(t)
+		ni.functions.setTarget(t)
 	end,
-	RunText = function(...)
+	runText = function(...)
 		local t = ...
 		if t == nil then
 			return
 		end
-		ni.functions.RunText(...)
+		ni.functions.runText(...)
 	end,
-	UseItem = function(...)
+	useItem = function(...)
 		local t = ...
 		if t == nil then
 			return
 		end
-		ni.functions.Item(...)
+		ni.functions.item(...)
 	end,
-	UseInventoryItem = function(...)
+	useInventoryItem = function(...)
 		local t = ...
 		if t == nil then
 			return
 		end
-		ni.functions.InventoryItem(...)
+		ni.functions.inventoryItem(...)
 	end,
-	Interact = function(t)
+	interact = function(t)
 		if t == nil then
 			return
 		end
-		ni.functions.Interact(t)
+		ni.functions.interact(t)
 	end,
-	IsCasting = function()
-		return ni.unit.IsCasting("player")
+	isCasting = function()
+		return ni.unit.isCasting("player")
 	end,
-	HasGlyph = function(glyphID)
+	hasGlyph = function(glyphID)
 		local hasglyph = false
 		local i = 1
-		local glyph = GetGlyphSocketInfo(i)
+		local glyph = getGlyphSocketInfo(i)
 		while glyph do
-			local id = select(3, GetGlyphSocketInfo(i))
+			local id = select(3, getGlyphSocketInfo(i))
 			if id == glyphID then
 				hasglyph = true
 				break
 			end
 			i = i + 1
-			glyph = GetGlyphSocketInfo(i)
+			glyph = getGlyphSocketInfo(i)
 		end
 		return hasglyph
 	end,
-	HasItem = function(item)
+	hasItem = function(item)
 		local hasitem = false
 		for b = 0, 4 do
-			for s = 1, GetContainerNumSlots(b) do
-				if GetContainerItemID(b, s) == item then
+			for s = 1, getContainerNumSlots(b) do
+				if getContainerItemID(b, s) == item then
 					hasitem = true
 					break
 				end
@@ -156,67 +156,67 @@ ni.player = {
 		end
 		return hasitem
 	end,
-	ItemEquipped = function(id)
+	itemEquipped = function(id)
 		local itemequipped = false
 		for i = 1, 19 do
-			if GetInventoryItemID("player", i) == id then
+			if getInventoryItemID("player", i) == id then
 				itemequipped = true
 				break
 			end
 		end
 		return itemequipped
 	end,
-	SlotCd = function(slotnum)
-		if GetItemSpell(GetInventoryItemID("player", slotnum)) == nil then
+	slotCd = function(slotnum)
+		if getItemSpell(GetInventoryItemID("player", slotnum)) == nil then
 			return true
 		end
-		local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", slotnum))
+		local start, duration, enable = getItemCooldown(GetInventoryItemID("player", slotnum))
 		if (start > 0 and duration > 0) then
 			return true
 		else
 			return false
 		end
 	end,
-	ItemCd = function(item)
-		local start, duration, enable = GetItemCooldown(item)
+	itemCd = function(item)
+		local start, duration, enable = getItemCooldown(item)
 		if (start > 0 and duration > 0) then
-			return start + duration - GetTime()
+			return start + duration - getTime()
 		end
 
 		return 0
 	end,
-	PetCd = function(spell)
-		local start, duration, enable = GetSpellCooldown(spell)
+	petCd = function(spell)
+		local start, duration, enable = getSpellCooldown(spell)
 		if (start > 0 and duration > 0) then
-			return start + duration - GetTime()
+			return start + duration - getTime()
 		else
 			return 0
 		end
 	end,
-	CanHeal = function(t)
-		local _, class = UnitClass("player")
+	canHeal = function(t)
+		local _, class = unitClass("player")
 		local heal = nil
 
 		if class == "PALADIN" then
-			heal = "Holy Light"
+			heal = "Holy light"
 		elseif class == "PRIEST" then
 			heal = "Renew"
 		elseif class == "DRUID" then
-			heal = "Healing Touch"
+			heal = "Healing touch"
 		elseif class == "SHAMAN" then
-			heal = "Healing Wave"
+			heal = "Healing wave"
 		elseif class == "MONK" then
-			heal = "Healing Surge"
+			heal = "Healing surge"
 		end
 
-		if UnitExists(t) and IsSpellInRange(heal, t) == 1 then
+		if unitExists(t) and isSpellInRange(heal, t) == 1 then
 			return true
 		end
 
 		return false
 	end,
-	HasHeal = function()
-		local _, class = UnitClass("player")
+	hasHeal = function()
+		local _, class = unitClass("player")
 		local has = false
 
 		if class == "PALADIN" then
@@ -231,14 +231,14 @@ ni.player = {
 
 		return has
 	end,
-	IsMoving = function()
-		if ni.unit.IsMoving("player") or IsFalling() then
+	isMoving = function()
+		if ni.unit.isMoving("player") or isFalling() then
 			return true
 		end
 
 		return false
 	end,
-	Hp = function()
-		return ni.unit.Hp("player")
+	hp = function()
+		return ni.unit.hp("player")
 	end
 }
