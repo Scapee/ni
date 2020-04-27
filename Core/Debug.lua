@@ -4,7 +4,7 @@ ni.debug = {
 			print("\124cffff0000" .. str)
 		end
 	end,
-	AddLog = function(str, bool)
+	Log = function(str, bool)
 		local bool = bool ~= nil and bool or false
 		return (str ~= nil and bool ~= nil) and ni.functions.AddLog(str, bool) or false
 	end,

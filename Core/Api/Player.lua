@@ -25,25 +25,25 @@ local GetGlyphSocketInfo,
 
 ni.player = {
 	DebuffType = function(str)
-		return ni.debuff.HasType("player", str)
+		return ni.unit.DebuffType("player", str)
 	end,
 	BuffType = function(str)
-		return ni.buff.HasType("player", str)
+		return ni.unit.BuffType("player", str)
 	end,
 	Debuff = function(spellID, caster, exact)
-		return ni.debuff.Has("player", spellID, caster, exact)
+		return ni.unit.Debuff("player", spellID, caster, exact)
 	end,
 	Debuffs = function(spellIDs, caster)
-		return ni.debuff.HasMany("player", spellIDs, caster)
+		return ni.unit.Debuffs("player", spellIDs, caster)
 	end,
 	Buff = function(spellID, caster, exact)
-		return ni.buff.Has("player", spellID, caster, exact)
+		return ni.unit.Buff("player", spellID, caster, exact)
 	end,
 	Buffs = function(spellIDs, caster)
-		return ni.buff.HasMany("player", spellIDs, caster)
+		return ni.unit.Buffs("player", spellIDs, caster)
 	end,
 	Aura = function(spellID)
-		return ni.aura.Has("player", spellID)
+		return ni.unit.Aura("player", spellID)
 	end,
 	IsFacing = function(t)
 		return ni.unit.IsFacing("player", t)

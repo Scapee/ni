@@ -30,12 +30,8 @@ ni.utils = {
 		return t
 	end,
 	SplitStringToLower = function(str)
-		local t = {}
-		for st in string.gmatch(str, "([^|]+)") do
-			local strlwr = string.lower(st)
-			table.insert(t, strlwr)
-		end
-		return t
+		str = string.lower(str)
+		return ni.utils.SplitString(str)
 	end,
 	FindAnd = function(str)
 		return str and (string.match(str, "&&") and true) or nil

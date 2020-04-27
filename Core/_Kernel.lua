@@ -14,10 +14,6 @@ ni.delays = {}
 ni.debug = {}
 ni.ui = {}
 ni.unit = {}
-ni.flag = {}
-ni.buff = {}
-ni.debuff = {}
-ni.aura = {}
 ni.player = {}
 ni.rune = {}
 ni.spell = {}
@@ -30,7 +26,7 @@ ni[_class] = {
     rotations = {},
     StartRotation = function()
         if (ni.vars.profiles.active ~= nil and ni.vars.profiles.active ~= "None") then
-            ni[_class].rotations[ni.vars.profiles.active].Queue()
+            ni[_class].rotations[ni.vars.profiles.active].Start()
         end
     end
 }

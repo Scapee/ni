@@ -1,40 +1,5 @@
---5 - Members Table.lua
-local version = "1.0.0"
-local tinsert,
-	UnitExists,
-	UnitIsPlayer,
-	UnitGUID,
-	tostring,
-	tonumber,
-	UnitCanCooperate,
-	UnitIsCharmed,
-	UnitIsDeadOrGhost,
-	tContains,
-	GetSpellInfo,
-	UnitDebuff,
-	UnitClass,
-	UnitHealth,
-	UnitHealthMax,
-	UnitInRange =
-	tinsert,
-	UnitExists,
-	UnitIsPlayer,
-	UnitGUID,
-	tostring,
-	tonumber,
-	UnitCanCooperate,
-	UnitIsCharmed,
-	UnitIsDeadOrGhost,
-	tContains,
-	GetSpellInfo,
-	UnitDebuff,
-	UnitClass,
-	UnitHealth,
-	UnitHealthMax,
-	UnitInRange
+local GetNumRaidMembers, GetNumPartyMembers, IsInRaid, GetNumGroupMembers, tinsert
 
-ni.members = {}
-ni.tanks = {}
 ni.memberSetup = {}
 ni.memberSetup.cache = {}
 ni.BlacklistID = {24099}
@@ -42,15 +7,15 @@ ni.metaTable1 = {}
 ni.cantheal = {30843, 41292, 55593, 45996}
 ni.BadDebuffList = {}
 ni.metaTable1.__call = function(_, ...)
-	if select(4, GetBuildInfo()) == 30300 then
+	if ni.vars.build == 30300 then
 		local group = GetNumRaidMembers() > 0 and "raid" or "party"
 		local groupSize = group == "raid" and GetNumRaidMembers() or GetNumPartyMembers()
 		if group == "party" then
-			tinsert(ni.members, ni.memberSetup:new("player"))
+			tinsert(ni.members, ni.memberSetup:New("player"))
 		end
 		for i = 1, groupSize do
 			local groupUnit = group .. i
-			local groupMember = ni.memberSetup:new(groupUnit)
+			local groupMember = ni.memberSetup:New(groupUnit)
 			if groupMember then
 				tinsert(ni.members, groupMember)
 			end
@@ -59,11 +24,11 @@ ni.metaTable1.__call = function(_, ...)
 		local group = IsInRaid() and "raid" or "party"
 		local groupSize = IsInRaid() and GetNumGroupMembers() or GetNumGroupMembers() - 1
 		if group == "party" then
-			tinsert(ni.members, ni.memberSetup:new("player"))
+			tinsert(ni.members, ni.memberSetup:New("player"))
 		end
 		for i = 1, groupSize do
 			local groupUnit = group .. i
-			local groupMember = ni.memberSetup:new(groupUnit)
+			local groupMember = ni.memberSetup:New(groupUnit)
 			if groupMember then
 				tinsert(ni.members, groupMember)
 			end
@@ -88,21 +53,6 @@ ni.memberSetup.__index = {
 	target = "noobtarget",
 	isTank = false
 }
-ni.updateHealingTable = CreateFrame("frame", nil)
-ni.updateHealingTable:RegisterEvent("PARTY_MEMBERS_CHANGED")
-ni.updateHealingTable:RegisterEvent("RAID_ROSTER_UPDATE")
-ni.updateHealingTable:RegisterEvent("GROUP_ROSTER_UPDATE")
-ni.updateHealingTable:RegisterEvent("PARTY_CONVERTED_TO_RAID")
-ni.updateHealingTable:RegisterEvent("ZONE_CHANGED")
-ni.updateHealingTable:RegisterEvent("PLAYER_ENTERING_WORLD")
-ni.updateHealingTable:SetScript(
-	"OnEvent",
-	function()
-		table.wipe(ni.members)
-		table.wipe(ni.memberSetup.cache)
-		ni.SetupTables()
-	end
-)
 local function Nova_GUID(unit)
 	local nShortHand = ""
 	local targetGUID
@@ -118,7 +68,7 @@ local function Nova_GUID(unit)
 end
 local function CheckBadDebuff(tar)
 	for i = 1, #ni.BadDebuffList do
-		if ni.unit.debuff(tar, ni.BadDebuffList[i]) then
+		if ni.unit.Debuff(tar, ni.BadDebuffList[i]) then
 			return false
 		end
 	end
@@ -139,7 +89,7 @@ local function CheckCreatureType(tar)
 end
 local function HealCheck(tar)
 	if
-		((UnitCanCooperate("player", tar) and not UnitIsCharmed(tar) and not UnitIsDeadOrGhost(tar) and ni.unit.exists(tar)) or
+		((UnitCanCooperate("player", tar) and not UnitIsCharmed(tar) and not UnitIsDeadOrGhost(tar) and ni.unit.Exists(tar)) or
 			UnitIsUnit("player", tar)) and
 			CheckBadDebuff(tar) and
 			CheckCreatureType(tar)
@@ -156,12 +106,6 @@ ni.UnitDispel = {
 	priest = {"Magic", "Disease"},
 	mage = {"Curse"}
 }
-local function DebuffBlacklistCheck(id)
-	if tContains(ni.BlacklistID, id) then
-		return false
-	end
-	return true
-end
 ni.addblacklistdebuff = function(id)
 	if not tContains(ni.BlacklistID, id) then
 		tinsert(ni.BlacklistID, id)
@@ -217,7 +161,7 @@ ni.ValidDispel = function(t)
 	end
 	return HasValidDispel
 end
-function ni.memberSetup:new(unit)
+function ni.memberSetup:New(unit)
 	if ni.memberSetup.cache[select(2, Nova_GUID(unit))] then
 		return false
 	end
@@ -228,31 +172,29 @@ function ni.memberSetup:new(unit)
 	end
 	function o:IsTank()
 		local result = false
-		if select(2, UnitClass(o.unit)) == "WARRIOR" and ni.unit.hasaura(o.guid, 71) then
+		if select(2, UnitClass(o.unit)) == "WARRIOR" and ni.unit.Aura(o.guid, 71) then
 			result = true
 		end
-		if select(2, UnitClass(o.unit)) == "DRUID" and ni.unit.buff(o.unit, 9634) then
+		if select(2, UnitClass(o.unit)) == "DRUID" and ni.unit.Buff(o.unit, 9634) then
 			result = true
 		end
-		if ni.unit.hasaura(o.guid, 57340) then
+		if ni.unit.Aura(o.guid, 57340) then
 			result = true
 		end
 		return result
 	end
-	function o:hasdebufftype(str)
-		return ni.unit.hasdebufftype(o.guid, str)
+	function o:DebuffType(str)
+		return ni.unit.DebuffType(o.guid, str)
 	end
-	function o:hasbufftype(str)
-		return ni.unit.hasbufftype(o.guid, str)
+	function o:BuffType(str)
+		return ni.unit.BuffType(o.guid, str)
 	end
 	function o:Dispel()
-		local nDebuffList = {}
 		local dispelthem = false
 		local _, class = UnitClass("player")
 		if class == "DRUID" then
 			local k = 1
 			while UnitDebuff(o.unit, k) do
-				local nDebuff = UnitDebuff(o.unit, k)
 				if ni.ValidDispel(o.unit) then
 					dispelthem = true
 					break
@@ -262,7 +204,6 @@ function ni.memberSetup:new(unit)
 		elseif class == "SHAMAN" then
 			local k = 1
 			while UnitDebuff(o.unit, k) do
-				local nDebuff = UnitDebuff(o.unit, k)
 				if ni.ValidDispel(o.unit) then
 					dispelthem = true
 					break
@@ -272,7 +213,6 @@ function ni.memberSetup:new(unit)
 		elseif class == "PALADIN" then
 			local k = 1
 			while UnitDebuff(o.unit, k) do
-				local nDebuff = UnitDebuff(o.unit, k)
 				if ni.ValidDispel(o.unit) then
 					dispelthem = true
 					break
@@ -282,7 +222,6 @@ function ni.memberSetup:new(unit)
 		elseif class == "PRIEST" then
 			local k = 1
 			while UnitDebuff(o.unit, k) do
-				local nDebuff = {UnitDebuff(o.unit, k)}
 				if ni.ValidDispel(o.unit) then
 					dispelthem = true
 					break
@@ -295,7 +234,7 @@ function ni.memberSetup:new(unit)
 		end
 		return false
 	end
-	function o:CalcHP()
+	function o:CalculateHp()
 		local Percent = 100 * UnitHealth(o.unit) / UnitHealthMax(o.unit)
 		local Actual = (UnitHealthMax(o.unit) - UnitHealth(o.unit))
 		if o.role == "TANK" then
@@ -308,7 +247,7 @@ function ni.memberSetup:new(unit)
 			Percent = Percent - 2
 		end
 		for i = 1, #ni.cantheal do
-			if ni.unit.debuff(o.unit, ni.cantheal[i]) then
+			if ni.unit.Debuff(o.unit, ni.cantheal[i]) then
 				Percent = 100
 				Actual = UnitHealthMax(o.unit)
 			end
@@ -334,8 +273,8 @@ function ni.memberSetup:new(unit)
 	end
 	function o:RangeCheck()
 		local range = false
-		if ni.unit.exists(o.guid) and ni.spell.los(o.guid) then
-			local dist = ni.player.distance(o.guid)
+		if ni.unit.Exists(o.guid) and ni.spell.LoS(o.guid) then
+			local dist = ni.player.Distance(o.guid)
 			if (dist ~= nil and dist < 40) then
 				range = true
 			else
@@ -351,8 +290,8 @@ function ni.memberSetup:new(unit)
 		o.guidsh = select(2, o:nGUID())
 		o.range = o:RangeCheck()
 		o.dispel = o:Dispel()
-		o.hp = o:CalcHP()
-		o.threat = ni.unit.threat(o.unit)
+		o.hp = o:CalculateHp()
+		o.threat = ni.unit.Threat(o.unit)
 		o.target = tostring(o.unit) .. "target"
 		o.isTank = o:IsTank()
 		ni.memberSetup.cache[select(2, Nova_GUID(o.unit))] = o

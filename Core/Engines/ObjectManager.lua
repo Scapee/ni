@@ -71,25 +71,6 @@ ni.objectSetup.__index = {
 	name = "Unknown",
 	type = 0
 }
-local _powerTypes = {
-	mana = 0,
-	rage = 1,
-	focus = 2,
-	energy = 3,
-	combopoints = 4,
-	runes = 5,
-	runicpower = 6,
-	soulshards = 7,
-	eclipse = 8,
-	holy = 9,
-	alternate = 10,
-	darkforce = 11,
-	chi = 12,
-	shadoworbs = 13,
-	burningembers = 14,
-	demonicfury = 15
-}
-
 function ni.objectSetup:Get(objguid, objtype, objname)
 	if ni.objectSetup.cache[objguid] then
 		return ni.objectSetup.cache[objguid]
@@ -115,10 +96,7 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 		return ni.unit.Hp(o.guid)
 	end
 	function o:Power(t)
-		if tonumber(t) == nil then
-			t = _powerTypes[t]
-		end
-		return UnitPower(o.guid, t)
+		return ni.power.CurrentPercent(o.guid)
 	end
 	function o:Unit()
 		return o.type == 3
@@ -127,10 +105,7 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 		return o.type == 4
 	end
 	function o:PowerMax(t)
-		if tonumber(t) == nil then
-			t = _powerTypes[t]
-		end
-		return UnitPowerMax(o.guid, t)
+		return ni.power.Max(o.guid)
 	end
 	function o:CanAttack(tar)
 		local t = true and tar or "player"
@@ -145,7 +120,7 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 		return ni.unit.LoS(o.guid, t)
 	end
 	function o:Cast(spell)
-		ni.spell.cast(spell, o.guid)
+		ni.spell.Cast(spell, o.guid)
 	end
 	function o:CastAt(spell)
 		if ni.spell.LoS(o.guid) then
@@ -157,16 +132,20 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 	end
 	function o:IsBehind(tar, rev)
 		local t = true and tar or "player"
+
 		if rev ~= nil then
 			return ni.unit.IsBehind(t, o.guid)
 		end
+
 		return ni.unit.IsBehind(o.guid, t)
 	end
 	function o:IsFacing(tar, rev)
 		local t = true and tar or "player"
+
 		if rev ~= nil then
 			return ni.unit.IsFacing(t, o.guid)
 		end
+
 		return ni.unit.IsFacing(o.guid, t)
 	end
 	function o:Distance(tar)
@@ -174,15 +153,13 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 		return ni.unit.Distance(o.guid, t)
 	end
 	function o:Range(tar)
-		local dist = o:Distance(tar)
-		return (dist < 40) and true or false
+		return ni.unit.HasReach(tar)
 	end
 	function o:Creator()
 		return ni.unit.Creator(o.guid)
 	end
 	function o:Target()
-		local t = select(6, ni.unit.Info(o.guid))
-		return t
+		return select(6, ni.unit.Info(o.guid))
 	end
 	function o:Location()
 		local x, y, z, r = ni.unit.Info(o.guid)
@@ -195,14 +172,14 @@ function ni.objectSetup:Create(objguid, objtype, objname)
 		return t
 	end
 	function o:CalculateTtd()
-		ni.ttd.CalculateTtd(o)
+		ni.ttd.Calculate(o)
 	end
 	function o:UpdateObject()
-		local _, _, _, _, obtype = ni.unit.info(o.guid)
+		local _, _, _, _, obtype = ni.unit.Info(o.guid)
 		o.guid = o.guid
 		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid)
 		o.type = o.type
-		o:calculatettd()
+		o:CalculateTtd()
 	end
 	ni.objectSetup.cache[objguid] = o
 	return o

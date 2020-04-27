@@ -35,7 +35,7 @@ ni.frames.Global_OnUpdate = function(self, elapsed)
 	if UnitExists == nil or ni.functions.Cast == nil or not GetZoneText() then
 		return true
 	end
-	if select(11, ni.player.debuff(9454)) == 9454 then
+	if select(11, ni.player.Debuff(9454)) == 9454 then
 		return true
 	end
 	if ni.vars.profiles.enabled then
@@ -103,8 +103,8 @@ ni.frames.Global_OnUpdate = function(self, elapsed)
 				local func = tremove(qRec, 1)
 				local args = tremove(qRec, 1)
 				local id, tar = unpack(args)
-				ni.Info.update(id, true)
-				if ni.spell.available(id, true) then
+				ni.Info.Update(id, true)
+				if ni.spell.Available(id, true) then
 					count = count - 1
 					func(id, tar)
 				else

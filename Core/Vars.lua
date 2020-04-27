@@ -1,7 +1,11 @@
+local GetBuildInfo = GetBuildInfo
+
+local build = select(4, GetBuildInfo())
+
 ni.vars = {
 	latency = 220,
 	interrupt = "all",
-	build = 30300,
+	build = build,
 	debug = false,
 	hotkeys = {
 		aoe = "{aoeToggle}",

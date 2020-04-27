@@ -1,6 +1,8 @@
+local UnitHealth, GetTime, UnitIsDeadOrGhost, UnitHealthMax = UnitHealth, GetTime, UnitIsDeadOrGhost, UnitHealthMax
+
 ni.ttd = {
-	CalculateTtd = function(o)
-		if (o:unit() or o:player()) and o:canattack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
+	Calculate = function(o)
+		if (o:Unit() or o:Player()) and o:CanAttack() and not UnitIsDeadOrGhost(o.guid) and o:Combat() then
 			if o.timeincombat == nil then
 				o.timeincombat = GetTime()
 			end

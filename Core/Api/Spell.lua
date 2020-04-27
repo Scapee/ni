@@ -63,19 +63,18 @@ ni.spell = {
 		if id > 0 and IsSpellKnown(id) then
 			local start, duration = GetSpellCooldown(id)
 			if (start > 0 and duration > 0) then
-				return start + duration - GetTime()
+				return start + duration - GetTime(), true
 			else
-				return 0
+				return 0, false
 			end
 		else
-			return 0
+			return 0, false
 		end
 	end,
 	Gcd = function()
 		local _, d = GetSpellCooldown(61304)
 		return d ~= 0
 	end,
-	-- TODO: use ni.power instead of calculating inside this function
 	Available = function(id, stutter)
 		local stutter = true and stutter or true
 
@@ -133,9 +132,9 @@ ni.spell = {
 			if st ~= nil then
 				local id = tonumber(st)
 				if id ~= nil then
-					ni.spell.cast(id, t)
+					ni.spell.Cast(id, t)
 				else
-					ni.spell.cast(st, t)
+					ni.spell.Cast(st, t)
 				end
 			end
 		end
@@ -147,7 +146,7 @@ ni.spell = {
 				ni.player.ClickTerrain("click")
 			elseif ni.unit.Exists(t) then
 				local offset = true and offset or random()
-				local x, y, z = ni.unit.info(t)
+				local x, y, z = ni.unit.Info(t)
 				local r = offset * sqrt(random())
 				local theta = random() * 360
 				local tx = x + r * cos(theta)
@@ -157,7 +156,7 @@ ni.spell = {
 			end
 		end
 	end,
-	Queue = function(...)
+	CastQueue = function(...)
 		local id, tar = ...
 		if id == nil then
 			id = ni.getSpellIdFromActionBar()
@@ -175,7 +174,7 @@ ni.spell = {
 		tinsert(ni.spell.queue, {ni.spell.Cast, {id, tar}})
 		ni.frames.SpellQueue.Update(id, true)
 	end,
-	QueueAt = function(...)
+	CastAtQueue = function(...)
 		local id, tar = ...
 		if id == nil then
 			id = ni.getSpellIdFromActionBar()
