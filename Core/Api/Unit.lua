@@ -168,7 +168,7 @@ ni.unit = {
 		if tonumber(tmp) == nil then
 			t = UnitGUID(tmp)
 			if t == nil then
-				t = ni.om.oGUID(tmp)
+				t = ni.objectManager.ObjectGUID(tmp)
 			end
 		end
 

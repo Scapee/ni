@@ -49,7 +49,7 @@ ni.frames.Global_OnUpdate = function(self, elapsed)
 		if ni.vars.units.followEnabled then
 			if ni.objectManager.Contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
 				local unit = ni.vars.units.follow
-				local uGUID = ni.objectManager.oGUID(unit) or UnitGUID(unit)
+				local uGUID = ni.objectManager.ObjectGUID(unit) or UnitGUID(unit)
 				local followTar = nil
 				local distance = nil
 				if UnitAffectingCombat(uGUID) then
