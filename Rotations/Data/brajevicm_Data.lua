@@ -1,1 +1,1 @@
-local hello = "hello"
+hello = "Hello"

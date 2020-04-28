@@ -7,7 +7,7 @@ if ni.utils.loadfile("Rotations\\Data\\brajevicm_Data.lua") then
 
 	local abilities = {
 		["Print Hello"] = function()
-			ni.debug.print(hello)
+			ni.debug.log(hello)
 		end
 	}
 
