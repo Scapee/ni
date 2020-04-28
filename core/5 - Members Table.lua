@@ -373,15 +373,15 @@ ni.Tanks = function()
     elseif ni.vars.units.mainTankEnabled and not ni.vars.units.offTankEnabled then
         return ni.vars.units.mainTank, tanks[1].unit
     else
-        return tanks[1].unit, 'focus'
+        return tanks[1].unit, ''
     end
   end
   if ni.vars.units.mainTankEnabled then
-    return ni.vars.units.mainTank, 'focus'
+    return ni.vars.units.mainTank, ''
   elseif ni.vars.units.offTankEnabled then
-    return 'focus', ni.vars.units.offTank
+    return '', ni.vars.units.offTank
   else
-    return 'focus'
+    return ''
   end
 end
 ni.AverageHealth = function(n) 
