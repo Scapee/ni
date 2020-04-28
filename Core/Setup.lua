@@ -2,6 +2,7 @@ local files = {
 	"Core\\Internal\\Vars.lua",
 	"Core\\Internal\\Debug.lua",
 	"Core\\Internal\\Rotation.lua",
+	"Core\\Internal\\Bootstrap.lua",
 	"Core\\Frames\\UI.lua",
 	"Core\\Frames\\CombatLog.lua",
 	"Core\\Frames\\Delay.lua",

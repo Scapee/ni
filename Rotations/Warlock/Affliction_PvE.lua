@@ -1,5 +1,4 @@
 ni.utils.loadfile("Rotations/Data/brajevicm_Data.lua")
-
 local rawset, hello = rawset, hello -- Loaded from file above
 
 local priorities = {
@@ -13,19 +12,5 @@ local abilities = {
 	end
 }
 
-local table = {
-	start = function()
-		local _priorities = priorities
-		local _abilities = abilities
-
-		for i = 1, #_priorities do
-			local priority = _priorities[i]
-			if _abilities[priority]() then
-				break
-			end
-		end
-	end
-}
-
-rawset(ni["WARLOCK"].rotations, "Affliction_PvE", table)
+rawset(ni["WARLOCK"].rotations, "Affliction_PvE", ni.bootstrap.rotation(priorities, abilities))
 ni.debug.Log("Affliction Loaded")
