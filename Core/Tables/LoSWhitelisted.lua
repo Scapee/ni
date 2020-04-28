@@ -1,4 +1,4 @@
-ni.tables.whitelistedLoSUnits = {
+ni.tables.whitelistedlosunits = {
     [32934] = "Right Arm",
     [32933] = "Left Arm",
     [33329] = "Heart of the Deconstructor",

@@ -1,14 +1,13 @@
 ni.debug = {
-	print = function(str)
+	print = function(string)
 		if ni.vars.debug then
-			print("\124cffff0000" .. str)
+			print("\124cffff0000" .. string);
 		end
 	end,
-	log = function(str, bool)
-		local bool = bool ~= nil and bool or false
-		return (str ~= nil and bool ~= nil) and ni.functions.addLog(str, bool) or false
+	log = function(string, bool) --bool is optional, true for error message, empty or false for normal
+		return ni.functions.addlog(string, bool);
 	end,
 	popup = function(title, text)
-		return (title ~= nil and text ~= nil) and ni.functions.popup(title, text) or false
+		ni.functions.popup(title, text);
 	end
 }

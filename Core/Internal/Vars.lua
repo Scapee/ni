@@ -1,5 +1,3 @@
-local GetBuildInfo = GetBuildInfo
-
 local build = select(4, GetBuildInfo())
 
 ni.vars = {
@@ -9,7 +7,7 @@ ni.vars = {
 	debug = false,
 	hotkeys = {
 		aoe = "{aoeToggle}",
-		cd = "{cdToggle}",
+		cd = "{cdtoggle}",
 		pause = "{pauseToggle}",
 		custom = "{customToggle}"
 	},

@@ -7,11 +7,11 @@ local files = {
 	"Core\\Frames\\Delay.lua",
 	"Core\\Frames\\Interrupt.lua",
 	"Core\\Frames\\Healing.lua",
-	"Core\\Frames\\ObjectManager.lua",
 	"Core\\Frames\\Global.lua",
 	"Core\\Engines\\TimeToDie.lua",
 	"Core\\Engines\\Healing.lua",
-	"Core\\Engines\\ObjectManager.lua",
+	"Core\\Engines\\objectmanager.lua",
+	"Core\\Frames\\ObjectManager.lua",
 	"Core\\Tables\\Dummies.lua",
 	"Core\\Tables\\Bosses.lua",
 	"Core\\Tables\\MismarkedBosses.lua",
@@ -26,14 +26,14 @@ local files = {
 	"Core\\Api\\Spell.lua"
 }
 
-if ni.functions.loadLua("Core\\Internal\\Utils.lua") then
-	if ni.utils.loadFiles(files) then
-		ni.frames.delay:setScript("OnUpdate", ni.frames.delay_OnUpdate)
-		ni.frames.combatLog:setScript("OnEvent", ni.frames.combatLog_OnEvent)
-		ni.frames.interrupt:setScript("OnUpdate", ni.frames.interrupt_OnUpdate)
-		ni.frames.healing:setScript("OnEvent", ni.frames.healing_OnUpdate)
-		ni.frames.objectManager:setScript("OnUpdate", ni.frames.objectManager_OnUpdate)
-		ni.frames.global:setScript("OnUpdate", ni.frames.global_OnUpdate)
-		ni.frames.floatingText:message("Loaded")
+if ni.functions.loadlua("Core\\Internal\\Utils.lua") then
+	if ni.utils.loadfiles(files) then
+		ni.frames.delay:SetScript("OnUpdate", ni.frames.delay_OnUpdate)
+		ni.frames.combatlog:SetScript("OnEvent", ni.frames.combatLog_OnEvent)
+		ni.frames.interrupt:SetScript("OnUpdate", ni.frames.interrupt_OnUpdate)
+		ni.frames.healing:SetScript("OnEvent", ni.frames.healing_OnUpdate)
+		ni.frames.objectmanager:SetScript("OnUpdate", ni.frames.objectManager_OnUpdate)
+		ni.frames.global:SetScript("OnUpdate", ni.frames.global_OnUpdate)
+		ni.frames.floatingtext:message("Loaded")
 	end
 end

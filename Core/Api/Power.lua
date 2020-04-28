@@ -19,7 +19,7 @@ ni.power = {
 		burningembers = 14,
 		demonicfury = 15
 	},
-	currentPercent = function(t, type)
+	currentpercent = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
@@ -33,7 +33,7 @@ ni.power = {
 
 		return UnitPowerMax(t, type)
 	end,
-	isMax = function(t, type)
+	ismax = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end

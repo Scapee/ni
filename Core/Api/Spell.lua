@@ -53,7 +53,7 @@ ni.spell = {
 		if s == nil then
 			return nil
 		end
-		local id = ni.functions.getSpellId(s)
+		local id = ni.functions.getspellid(s)
 		return (id ~= 0) and id or nil
 	end,
 	cd = function(id)
@@ -102,7 +102,7 @@ ni.spell = {
 		end
 		return result
 	end,
-	castTime = function(spell)
+	casttime = function(spell)
 		return select(7, GetSpellInfo(spell)) / 1000 + select(3, GetNetStats()) / 1000
 	end,
 	cast = function(...)
@@ -124,8 +124,8 @@ ni.spell = {
 			ni.functions.cast(i)
 		end
 	end,
-	castSpells = function(spells, t)
-		local items = ni.utils.splitString(spells)
+	castspells = function(spells, t)
+		local items = ni.utils.splitstring(spells)
 
 		for i = 0, #items do
 			local st = items[i]
@@ -139,11 +139,11 @@ ni.spell = {
 			end
 		end
 	end,
-	castAt = function(spell, t, offset)
+	castat = function(spell, t, offset)
 		if spell then
-			if t == "click" then
+			if t == "mouse" then
 				ni.spell.cast(spell)
-				ni.player.clickTerrain("click")
+				ni.player.clickat("mouse")
 			elseif ni.unit.exists(t) then
 				local offset = true and offset or random()
 				local x, y, z = ni.unit.info(t)
@@ -152,32 +152,32 @@ ni.spell = {
 				local tx = x + r * cos(theta)
 				local ty = y + r * sin(theta)
 				ni.spell.cast(spell)
-				ni.player.clickTerrain(tx, ty, z)
+				ni.player.clickat(tx, ty, z)
 			end
 		end
 	end,
-	castQueue = function(...)
+	castqueue = function(...)
 		local id, tar = ...
 		if id == nil then
-			id = ni.getSpellIdFromActionBar()
+			id = ni.getspellidfromactionbar()
 		end
 		if id == nil or id == 0 then
 			return
 		end
 		for k, v in pairs(ni.spell.queue) do
 			if tContains(v[2], id) then
-				ni.frames.spellQueue.update()
+				ni.frames.spellqueue.update()
 				tremove(ni.spell.queue, k)
 				return
 			end
 		end
 		tinsert(ni.spell.queue, {ni.spell.cast, {id, tar}})
-		ni.frames.spellQueue.update(id, true)
+		ni.frames.spellqueue.update(id, true)
 	end,
-	castAtQueue = function(...)
+	castatqueue = function(...)
 		local id, tar = ...
 		if id == nil then
-			id = ni.getSpellIdFromActionBar()
+			id = ni.getspellidfromactionbar()
 			tar = "target"
 		end
 		if id == nil or id == 0 then
@@ -191,28 +191,28 @@ ni.spell = {
 			end
 		end
 		if tar ~= nil then
-			tinsert(ni.spell.queue, {ni.spell.castAt, {id, tar}})
-			ni.frames.spellQueue.update(id, true)
+			tinsert(ni.spell.queue, {ni.spell.castat, {id, tar}})
+			ni.frames.spellqueue.update(id, true)
 		end
 	end,
-	stopCasting = function()
-		ni.functions.stopCasting()
+	stopcasting = function()
+		ni.functions.stopcasting()
 	end,
-	stopChanneling = function()
+	stopchanneling = function()
 		StrafeLeftStart()
 		StrafeLeftStop()
 	end,
-	loS = function(...)
+	los = function(...)
 		local t = ...
 		if t == nil then
-			return
+			return false;
 		end
 
-		if (ni.tables.whitelistedLoSUnits[ni.unit.id(t)]) then
+		if (ni.tables.whitelistedlosunits[ni.unit.id(t)]) then
 			return true
 		end
 
-		return ni.functions.loS("player", ...)
+		return ni.functions.los("player", ...)
 	end,
 	valid = function(t, spellid, facing, los, friendly)
 		friendly = true and friendly or false
@@ -233,15 +233,15 @@ ni.spell = {
 				IsSpellInRange(name, t) == 1 and
 				IsSpellKnown(spellid) and
 				UnitPower("player", powertype) >= cost and
-				((facing and ni.player.isFacing(t)) or not facing) and
-				((los and ni.spell.loS(t)) or not los)
+				((facing and ni.player.isfacing(t)) or not facing) and
+				((los and ni.spell.los(t)) or not los)
 		 then
 			return true
 		end
 
 		return false
 	end,
-	getInterrupt = function()
+	getinterrupt = function()
 		local _, class = UnitClass("player")
 		local interruptSpell = 0
 
@@ -269,28 +269,28 @@ ni.spell = {
 
 		return interruptSpell
 	end,
-	castInterrupt = function(t)
-		local interruptSpell = ni.spell.getInterrupt()
+	castinterrupt = function(t)
+		local interruptSpell = ni.spell.getinterrupt()
 
 		if interruptSpell ~= 0 then
-			ni.spell.stopCasting()
-			ni.spell.stopChanneling()
+			ni.spell.stopcasting()
+			ni.spell.stopchanneling()
 			ni.spell.cast(interruptSpell, t)
 		end
 	end,
-	getPercent = function()
+	getpercent = function()
 		return math.random(40, 60)
 	end,
-	shouldInterrupt = function(t)
-		local InterruptPercent = ni.spell.getPercent()
-		local castName, _, _, _, castStartTime, castEndTime, _, _, castInterruptable = UnitCastingInfo(t)
+	shouldinterrupt = function(t)
+		local InterruptPercent = ni.spell.getpercent()
+		local castName, _, _, _, castStartTime, castEndTime, _, _, castinterruptable = UnitCastingInfo(t)
 		local channelName, _, _, _, channelStartTime, channelEndTime, _, _, channelInterruptable = UnitChannelInfo(t)
 
 		if channelName ~= nil then
 			castName = channelName
 			castStartTime = channelStartTime
 			castEndTime = channelEndTime
-			castInterruptable = channelInterruptable
+			castinterruptable = channelInterruptable
 		end
 
 		if castName ~= nil then
@@ -298,14 +298,14 @@ ni.spell = {
 				return false
 			end
 			local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
-			local castTime = castEndTime - castStartTime
-			local currentPercent = timeSinceStart / castTime * 100000
+			local casttime = castEndTime - castStartTime
+			local currentpercent = timeSinceStart / casttime * 100000
 
-			if (currentPercent < InterruptPercent) then
+			if (currentpercent < InterruptPercent) then
 				return false
 			end
 
-			local interruptSpell = ni.spell.getInterrupt()
+			local interruptSpell = ni.spell.getinterrupt()
 
 			if interruptSpell ~= 0 then
 				if ni.spell.cd(interruptSpell) > 0 or not IsSpellInRange(GetSpellInfo(interruptSpell), t) == 1 then

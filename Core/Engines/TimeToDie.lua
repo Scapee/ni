@@ -2,7 +2,7 @@ local UnitHealth, GetTime, UnitIsDeadOrGhost, UnitHealthMax = UnitHealth, GetTim
 
 ni.ttd = {
 	calculate = function(o)
-		if (o:unit() or o:player()) and o:canAttack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
+		if (o:unit() or o:player()) and o:canattack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
 			if o.timeincombat == nil then
 				o.timeincombat = GetTime()
 			end

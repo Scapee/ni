@@ -27,16 +27,16 @@ ni.rune = {
 		end
 		return runesOnCd, runesOffCd
 	end,
-	deathRuneCd = function()
+	deathrunecd = function()
 		return ni.rune.cd(4)
 	end,
-	frostRuneCd = function()
+	frostrunecd = function()
 		return ni.rune.cd(2)
 	end,
-	unholyRuneCd = function()
+	unholyrunecd = function()
 		return ni.rune.cd(3)
 	end,
-	bloodRuneCd = function()
+	bloodrunecd = function()
 		return ni.rune.cd(1)
 	end
 }

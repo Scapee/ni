@@ -74,10 +74,10 @@ local function CheckBadDebuff(tar)
 	end
 	return true
 end
-local function CheckCreatureType(tar)
+local function Checkcreaturetype(tar)
 	local CreatureTypeList = {"Critter", "Totem", "Non-combat Pet", "Wild Pet"}
 	for i = 1, #CreatureTypeList do
-		if UnitCreatureType(tar) == CreatureTypeList[i] then
+		if Unitcreaturetype(tar) == CreatureTypeList[i] then
 			return false
 		end
 	end
@@ -92,7 +92,7 @@ local function HealCheck(tar)
 		((UnitCanCooperate("player", tar) and not UnitIsCharmed(tar) and not UnitIsDeadOrGhost(tar) and ni.unit.exists(tar)) or
 			UnitIsUnit("player", tar)) and
 			CheckBadDebuff(tar) and
-			CheckCreatureType(tar)
+			Checkcreaturetype(tar)
 	 then
 		return true
 	else
@@ -128,7 +128,7 @@ ni.validDispel = function(t)
 	end
 	local _, class = UnitClass("player")
 	while debuff do
-		local debuffType = select(5, UnitDebuff(t, i))
+		local debufftype = select(5, UnitDebuff(t, i))
 		if class == "PALADIN" then
 			if tContains(ni.unitDispel.paladin, debuffType) then
 				hasValidDispel = true
@@ -184,10 +184,10 @@ function ni.memberSetup:new(unit)
 		return result
 	end
 	function o:debuffType(str)
-		return ni.unit.debuffType(o.guid, str)
+		return ni.unit.debufftype(o.guid, str)
 	end
 	function o:buffType(str)
-		return ni.unit.buffType(o.guid, str)
+		return ni.unit.bufftype(o.guid, str)
 	end
 	function o:dispel()
 		local dispelthem = false
@@ -273,7 +273,7 @@ function ni.memberSetup:new(unit)
 	end
 	function o:rangeCheck()
 		local range = false
-		if ni.unit.exists(o.guid) and ni.spell.loS(o.guid) then
+		if ni.unit.exists(o.guid) and ni.spell.los(o.guid) then
 			local dist = ni.player.distance(o.guid)
 			if (dist ~= nil and dist < 40) then
 				range = true

@@ -33,35 +33,32 @@ local UnitGUID,
 	tContains,
 	UnitDebuff
 
+local creaturetypes = {
+	[0] = "Unknown",
+	[1] = "Beast",
+	[2] = "Dragon",
+	[3] = "Demon",
+	[4] = "Elemental",
+	[5] = "Giant",
+	[6] = "Undead",
+	[7] = "Humanoid",
+	[8] = "Critter",
+	[9] = "Mechanical",
+	[10] = "NotSpecified",
+	[11] = "Totem",
+	[12] = "NonCombatPet",
+	[13] = "GasCloud"
+}
+
 ni.unit = {
-	creatureTypes = {
-		[0] = "Unknown",
-		[1] = "Beast",
-		[2] = "Dragon",
-		[3] = "Demon",
-		[4] = "Elemental",
-		[5] = "Giant",
-		[6] = "Undead",
-		[7] = "Humanoid",
-		[8] = "Critter",
-		[9] = "Mechanical",
-		[10] = "NotSpecified",
-		[11] = "Totem",
-		[12] = "NonCombatPet",
-		[13] = "GasCloud"
-	},
 	exists = function(t)
-		return t ~= nil and ni.functions.objectExists(t) or false
+		return ni.functions.objectexists(t);
 	end,
-	loS = function(...)
-		local t1, t2 = ...
-		if t1 ~= nil and t2 ~= nil then
-			return ni.functions.loS(...)
-		end
-		return false
+	los = function(...) --target, target/x1,y1,z1,x2,y2,z2
+		return ni.functions.los(...)
 	end,
-	isCreator = function(t)
-		return ni.unit.exists(t) and ni.functions.unitCreator(t) or nil
+	creator = function(t)
+		return ni.unit.exists(t) and ni.functions.unitcreator(t) or nil
 	end,
 	creations = function(unit)
 		if unit then
@@ -81,19 +78,19 @@ ni.unit = {
 		end
 		return nil
 	end,
-	isCreature = function(t)
-		return ni.unit.exists(t) and ni.functions.creatureType(t) or 0
+	creature = function(t)
+		return ni.unit.exists(t) and ni.functions.creaturetype(t) or 0
 	end,
-	isTotem = function(t)
-		return (ni.unit.exists(t) and ni.unit.creatureType(t) == 11) or false
+	istotem = function(t)
+		return (ni.unit.exists(t) and ni.unit.creaturetype(t) == 11) or false
 	end,
-	isUnitReadableCreatureType = function(t)
-		return ni.unit.creatureTypes[ni.unit.creatureType(t)]
+	readablecreaturetype = function(t)
+		return creaturetypes[ni.unit.creaturetype(t)]
 	end,
-	hasReach = function(t)
-		return t ~= nil and ni.functions.combatReach(t) or 0
+	combatreach = function(t)
+		return t ~= nil and ni.functions.combatreach(t) or 0
 	end,
-	isBoss = function(t)
+	isboss = function(t)
 		local bossId = ni.unit.id(t)
 
 		if ni.tables.bosses[bossId] then
@@ -121,7 +118,7 @@ ni.unit = {
 			end
 		end
 	end,
-	isMoving = function(t)
+	ismoving = function(t)
 		return GetUnitSpeed(t) ~= 0
 	end,
 	id = function(t)
@@ -131,7 +128,7 @@ ni.unit = {
 			return tonumber((UnitGUID(t)):sub(-12, -7), 16)
 		end
 	end,
-	isDummy = function(t)
+	isdummy = function(t)
 		if ni.unit.exists(t) then
 			t = ni.unit.id(t)
 			return ni.tables.dummies[t]
@@ -140,10 +137,9 @@ ni.unit = {
 		return false
 	end,
 	ttd = function(t)
-		if ni.unit.isDummy(t) then
+		if ni.unit.isdummy(t) then
 			return 99
 		end
-
 		if ni.unit.exists(t) and (not UnitIsDeadOrGhost(t) and UnitCanAttack("player", t) == 1) then
 			t = UnitGUID(t)
 		else
@@ -168,24 +164,24 @@ ni.unit = {
 		if tonumber(tmp) == nil then
 			t = UnitGUID(tmp)
 			if t == nil then
-				t = ni.objectManager.objectGUID(tmp)
+				t = ni.objectmanager.objectGUID(tmp)
 			end
 		end
 
 		if ni.unit.exists(t) then
-			return ni.functions.objectInfo(t)
+			return ni.functions.objectinfo(t)
 		end
 	end,
-	isFacing = function(t1, t2)
-		return (t1 ~= nil and t2 ~= nil) and ni.functions.isFacing(t1, t2) or false
+	isfacing = function(t1, t2)
+		return (t1 ~= nil and t2 ~= nil) and ni.functions.isfacing(t1, t2) or false
 	end,
 	distance = function(t1, t2)
-		return (t1 ~= nil and t2 ~= nil) and ni.functions.getDistance(t1, t2) or nil
+		return (t1 ~= nil and t2 ~= nil) and ni.functions.getdistance(t1, t2) or nil
 	end,
-	isBehind = function(t1, t2)
-		return (t1 ~= nil and t2 ~= nil) and ni.functions.isBehind(t1, t2) or false
+	isbehind = function(t1, t2)
+		return (t1 ~= nil and t2 ~= nil) and ni.functions.isbehind(t1, t2) or false
 	end,
-	enemiesInRange = function(t, n)
+	enemiesinrange = function(t, n)
 		local tmp = {}
 		local unit = true and UnitGUID(t) or t
 		if unit then
@@ -202,7 +198,7 @@ ni.unit = {
 		end
 		return tmp, #tmp
 	end,
-	friendsInRange = function(t, n)
+	friendsinrange = function(t, n)
 		local tmp = {}
 		local unit = true and UnitGUID(t) or t
 		if unit then
@@ -219,9 +215,9 @@ ni.unit = {
 		end
 		return tmp, #tmp
 	end,
-	unitsTargeting = function(t, f)
+	unitstargeting = function(t, friendlies)
 		local unit = true and UnitGUID(t) or t
-		local f = f and true or false
+		local f = true and friendlies or false
 		local returntable = {}
 
 		if unit then
@@ -251,7 +247,7 @@ ni.unit = {
 		end
 		return returntable, #returntable
 	end,
-	isCasting = function(t)
+	iscasting = function(t)
 		local name, _, _, _, _, _, _, id = UnitCastingInfo(t)
 		if name and id == t then
 			return true
@@ -260,22 +256,22 @@ ni.unit = {
 		return false
 	end,
 	aura = function(t, s)
-		return (t ~= nil and s ~= nil) and ni.functions.hasAura(t, s) or false
+		return (t ~= nil and s ~= nil) and ni.functions.hasaura(t, s) or false
 	end,
-	buffType = function(t, str)
+	bufftype = function(t, str)
 		if not ni.unit.exists(t) then
 			return false
 		end
 
-		local st = ni.utils.splitStringToLower(str)
+		local st = ni.utils.splitstringtolower(str)
 		local has = false
 		local i = 1
 		local buff = UnitBuff(t, i)
 
 		while buff do
-			local buffType = select(5, UnitBuff(t, i))
-			if buffType ~= nil then
-				local bTlwr = string.lower(buffType)
+			local bufftype = select(5, UnitBuff(t, i))
+			if bufftype ~= nil then
+				local bTlwr = string.lower(bufftype)
 				if tContains(st, bTlwr) then
 					has = true
 					break
@@ -316,12 +312,12 @@ ni.unit = {
 		end
 	end,
 	buffs = function(t, ids, caster, exact)
-		local ands = ni.utils.findAnd(ids)
+		local ands = ni.utils.findand(ids)
 		local results = false
 		if ands ~= nil or (ands == nil and string.len(ids) > 0) then
 			local tmp
 			if ands then
-				tmp = ni.utils.splitStringByDelimiter(ids, "&&")
+				tmp = ni.utils.splitstringbydelimiter(ids, "&&")
 				for i = 0, #tmp do
 					if tmp[i] ~= nil then
 						local id = tonumber(tmp[i])
@@ -344,7 +340,7 @@ ni.unit = {
 					end
 				end
 			else
-				tmp = ni.utils.splitStringByDelimiter(ids, "||")
+				tmp = ni.utils.splitstringbydelimiter(ids, "||")
 				for i = 0, #tmp do
 					if tmp[i] ~= nil then
 						local id = tonumber(tmp[i])
@@ -366,21 +362,21 @@ ni.unit = {
 		end
 		return results
 	end,
-	debuffType = function(t, str)
+	debufftype = function(t, str)
 		if not ni.unit.exists(t) then
 			return false
 		end
 
-		local st = ni.utils.splitStringToLower(str)
+		local st = ni.utils.splitstringtolower(str)
 		local has = false
 		local i = 1
 		local debuff = UnitDebuff(t, i)
 
 		while debuff do
-			local debuffType = select(5, UnitDebuff(t, i))
+			local debufftype = select(5, UnitDebuff(t, i))
 
-			if debuffType ~= nil then
-				local dTlwr = string.lower(debuffType)
+			if debufftype ~= nil then
+				local dTlwr = string.lower(debufftype)
 				if tContains(st, dTlwr) then
 					has = true
 					break
@@ -422,14 +418,14 @@ ni.unit = {
 		end
 	end,
 	debuffs = function(t, spellIDs, caster, exact)
-		local ands = ni.utils.findAnd(spellIDs)
+		local ands = ni.utils.findand(spellIDs)
 		local results = false
 
 		if ands ~= nil or (ands == nil and string.len(spellIDs) > 0) then
 			local tmp
 
 			if ands then
-				tmp = ni.utils.splitStringByDelimiter(spellIDs, "&&")
+				tmp = ni.utils.splitstringbydelimiter(spellIDs, "&&")
 
 				for i = 0, #tmp do
 					if tmp[i] ~= nil then
@@ -452,7 +448,7 @@ ni.unit = {
 					end
 				end
 			else
-				tmp = ni.utils.splitStringByDelimiter(spellIDs, "||")
+				tmp = ni.utils.splitstringbydelimiter(spellIDs, "||")
 				for i = 0, #tmp do
 					local id = tonumber(tmp[i])
 					if id ~= nil then
@@ -474,164 +470,78 @@ ni.unit = {
 	end,
 	flags = function(t)
 		if t ~= nil then
-			return ni.functions.unitFlags(t)
+			return ni.functions.unitflags(t)
 		end
 	end,
-	dynamicFlags = function(t)
+	dynamicflags = function(t)
 		if t ~= nil then
-			return ni.functions.unitDynamicFlags(t)
+			return ni.functions.unitdynamicflags(t)
 		end
 	end,
-	isTappedByAllThreatList = function(t)
-		return (ni.unit.exists(t) and select(2, ni.unit.dynamicFlags(t))) or false
+	istappedbyallthreatlist = function(t)
+		return (ni.unit.exists(t) and select(2, ni.unit.dynamicflags(t))) or false
 	end,
 	lootable = function(t)
-		return (ni.unit.exists(t) and select(3, ni.unit.dynamicFlags(t))) or false
+		return (ni.unit.exists(t) and select(3, ni.unit.dynamicflags(t))) or false
 	end,
-	taggedByMe = function(t)
-		return (ni.unit.exists(t) and select(7, ni.unit.dynamicFlags(t))) or false
+	taggedbyme = function(t)
+		return (ni.unit.exists(t) and select(7, ni.unit.dynamicflags(t))) or false
 	end,
-	taggedByOther = function(t)
-		return (ni.unit.exists(t) and select(8, ni.unit.dynamicFlags(t))) or false
+	taggedbyother = function(t)
+		return (ni.unit.exists(t) and select(8, ni.unit.dynamicflags(t))) or false
 	end,
 	canPerformAction = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(1, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(1, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(1, ni.unit.flags(t))) or false
 	end,
 	confused = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(23, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(3, ni.unit.flags(t))) or false
-		end
-	end,
-	dazed = function(t)
-		if ni.vars.build == 30300 then
-			return false
-		else
-			return (ni.unit.exists(t) and select(4, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(23, ni.unit.flags(t))) or false
 	end,
 	disarmed = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(22, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(5, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(22, ni.unit.flags(t))) or false
 	end,
 	fleeing = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(24, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(6, ni.unit.flags(t))) or false
-		end
-	end,
-	influenced = function(t)
-		if ni.vars.build == 30300 then
-			return false
-		else
-			return (ni.unit.exists(t) and select(7, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(24, ni.unit.flags(t))) or false
 	end,
 	looting = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(11, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(8, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(11, ni.unit.flags(t))) or false
 	end,
 	mounted = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(28, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(9, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(28, ni.unit.flags(t))) or false
 	end,
-	notAttackable = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(2, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(11, ni.unit.flags(t))) or false
-		end
+	notattackable = function(t)
+		return (ni.unit.exists(t) and select(2, ni.unit.flags(t))) or false
 	end,
-	notSelectable = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(26, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(12, ni.unit.flags(t))) or false
-		end
+	notselectable = function(t)
+		return (ni.unit.exists(t) and select(26, ni.unit.flags(t))) or false
 	end,
 	pacified = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(18, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(13, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(18, ni.unit.flags(t))) or false
 	end,
 	petInCombat = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(12, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(14, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(12, ni.unit.flags(t))) or false
 	end,
-	playerControlled = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(4, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(15, ni.unit.flags(t))) or false
-		end
+	playercontrolled = function(t)
+		return (ni.unit.exists(t) and select(4, ni.unit.flags(t))) or false
 	end,
 	possessed = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(25, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(17, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(25, ni.unit.flags(t))) or false
 	end,
 	preparation = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(6, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(18, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(6, ni.unit.flags(t))) or false
 	end,
-	pvPFlagged = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(13, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(19, ni.unit.flags(t))) or false
-		end
+	pvpflagged = function(t)
+		return (ni.unit.exists(t) and select(13, ni.unit.flags(t))) or false
 	end,
 	silenced = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(14, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(21, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(14, ni.unit.flags(t))) or false
 	end,
 	skinnable = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(27, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(23, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(27, ni.unit.flags(t))) or false
 	end,
 	stunned = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(19, ni.unit.flags(t))) or false
-		else
-			return (ni.unit.exists(t) and select(24, ni.unit.flags(t))) or false
-		end
+		return (ni.unit.exists(t) and select(19, ni.unit.flags(t))) or false
 	end,
 	immune = function(t)
-		if ni.vars.build == 30300 then
-			return (ni.unit.exists(t) and select(32, ni.unit.flags(t))) or false
-		else
-			return false
-		end
+		return (ni.unit.exists(t) and select(32, ni.unit.flags(t))) or false
 	end
 }

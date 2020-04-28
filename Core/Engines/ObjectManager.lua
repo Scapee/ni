@@ -1,20 +1,28 @@
 local UnitName, UnitGUID, UnitPower, UnitPowerMax, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAttack =
-	unitName,
-	unitGUID,
-	unitPower,
-	unitPowerMax,
-	unitAffectingCombat,
-	getTime,
-	unitCanAssist,
-	unitCanAttack
+	UnitName,
+	UnitGUID,
+	UnitPower,
+	UnitPowerMax,
+	UnitAffectingCombat,
+	GetTime,
+	UnitCanAssist,
+	UnitCanAttack
 
-ni.objectManager = {
+	
+local objectsetup = {}
+local cache = {}
+cache.__index = {
+	guid = 0,
+	name = "Unknown",
+	type = 0
+}
+
+ni.objectmanager = {
 	get = function()
-		return ni.functions.getOM()
+		return ni.functions.getobjects()
 	end,
 	contains = function(o)
 		local tmp = UnitName(o)
-
 		if tmp ~= nil then
 			o = tmp
 		end
@@ -43,44 +51,53 @@ ni.objectManager = {
 				end
 			end
 		end
+	end,
+	onupdate = function(self, elapsed)
+		if ni.objects ~= nil and ni.functions.getOM ~= nil then
+			local throttle = 1 / GetFramerate()
+			self.st = elapsed + (self.st or 0)
+			if self.st > throttle then
+				self.st = 0
+				local tmp = ni.objectmanager.get()
+				for i = 1, #tmp do
+					local ob = ni.objectsetup:new(tmp[i].guid, tmp[i].type, tmp[i].name)
+					if ob then
+						rawset(ni.objects, tmp[i].guid, ob)
+					end
+				end
+				ni.objects:updateobjects()
+			end
+		end
 	end
 }
-
 setmetatable(
 	ni.objects,
 	{
 		__index = function(t, k)
 			local guid = true and UnitGUID(k) or nil
 			if guid ~= nil then
-				if ni.objectSetup.cache[guid] ~= nil then
-					return ni.objectSetup.cache[guid]
+				if cache[guid] ~= nil then
+					return cache[guid]
 				end
 				local _, _, _, _, otype = ni.unit.info(guid)
 				local name = UnitName(guid)
-				local ob = ni.objectSetup:get(guid, otype, name)
+				local ob = ni.objectsetup:get(guid, otype, name)
 				return ob
 			end
-			return ni.objectSetup:get(0, 0, "Unknown")
+			return ni.objectsetup:get(0, 0, "Unknown")
 		end
 	}
 )
-ni.objectSetup = {}
-ni.objectSetup.cache = {}
-ni.objectSetup.__index = {
-	guid = 0,
-	name = "Unknown",
-	type = 0
-}
-function ni.objectSetup:get(objguid, objtype, objname)
-	if ni.objectSetup.cache[objguid] then
-		return ni.objectSetup.cache[objguid]
+function ni.objectsetup:get(objguid, objtype, objname)
+	if cache[objguid] then
+		return cache[objguid]
 	else
-		return ni.objectSetup:create(objguid, objtype, objname)
+		return ni.objectsetup:create(objguid, objtype, objname)
 	end
 end
-function ni.objectSetup:create(objguid, objtype, objname)
+function ni.objectsetup:create(objguid, objtype, objname)
 	local o = {}
-	setmetatable(o, ni.objectSetup)
+	setmetatable(o, ni.objectsetup)
 	if objguid then
 		o.guid = objguid
 		o.name = objname
@@ -96,7 +113,7 @@ function ni.objectSetup:create(objguid, objtype, objname)
 		return ni.unit.hp(o.guid)
 	end
 	function o:power(t)
-		return ni.power.currentPercent(o.guid)
+		return ni.power.currentpercent(o.guid, t);
 	end
 	function o:unit()
 		return o.type == 3
@@ -104,62 +121,60 @@ function ni.objectSetup:create(objguid, objtype, objname)
 	function o:player()
 		return o.type == 4
 	end
-	function o:powerMax(t)
-		return ni.power.max(o.guid)
+	function o:powermax(t)
+		return ni.power.max(o.guid, t);
 	end
-	function o:canAttack(tar)
+	function o:canattack(tar)
 		local t = true and tar or "player"
 		return (UnitCanAttack(t, o.guid) == 1)
 	end
-	function o:canAssist(tar)
+	function o:canassist(tar)
 		local t = true and tar or "player"
 		return (UnitCanAssist(t, o.guid) == 1)
 	end
-	function o:loS(tar)
+	function o:los(tar)
 		local t = true and tar or "player"
-		return ni.unit.loS(o.guid, t)
+		return ni.unit.los(o.guid, t)
 	end
 	function o:cast(spell)
 		ni.spell.cast(spell, o.guid)
 	end
-	function o:castAt(spell)
-		if ni.spell.loS(o.guid) then
-			ni.spell.castAt(spell, o.guid)
+	function o:castat(spell)
+		if ni.spell.los(o.guid) then
+			ni.spell.castat(spell, o.guid)
 		end
 	end
 	function o:combat()
 		return (UnitAffectingCombat(o.guid) ~= nil)
 	end
-	function o:isBehind(tar, rev)
+	function o:isbehind(tar, rev)
 		local t = true and tar or "player"
-
 		if rev ~= nil then
-			return ni.unit.isBehind(t, o.guid)
+			return ni.unit.isbehind(t, o.guid)
 		end
-
-		return ni.unit.isBehind(o.guid, t)
+		return ni.unit.isbehind(o.guid, t)
 	end
-	function o:isFacing(tar, rev)
+	function o:isfacing(tar, rev)
 		local t = true and tar or "player"
-
 		if rev ~= nil then
-			return ni.unit.isFacing(t, o.guid)
+			return ni.unit.isfacing(t, o.guid)
 		end
-
-		return ni.unit.isFacing(o.guid, t)
+		return ni.unit.isfacing(o.guid, t)
 	end
 	function o:distance(tar)
 		local t = true and tar or "player"
 		return ni.unit.distance(o.guid, t)
 	end
 	function o:range(tar)
-		return ni.unit.hasReach(tar)
+		local dist = o:distance(tar);
+		return (dist < 40) and true or false;
 	end
 	function o:creator()
 		return ni.unit.creator(o.guid)
 	end
 	function o:target()
-		return select(6, ni.unit.info(o.guid))
+		local t = select(6, ni.unit.info(o.guid))
+		return t;
 	end
 	function o:location()
 		local x, y, z, r = ni.unit.info(o.guid)
@@ -171,35 +186,34 @@ function ni.objectSetup:create(objguid, objtype, objname)
 		}
 		return t
 	end
-	function o:calculateTtd()
+	function o:calculatettd()
 		ni.ttd.calculate(o)
 	end
-	function o:updateObject()
-		local _, _, _, _, obtype = ni.unit.info(o.guid)
+	function o:updateobject()
 		o.guid = o.guid
 		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid)
 		o.type = o.type
-		o:calculateTtd()
+		o:calculatettd()
 	end
-	ni.objectSetup.cache[objguid] = o
+	cache[objguid] = o
 	return o
 end
-function ni.objectSetup:new(objguid, objtype, objname)
-	if ni.objectSetup.cache[objguid] then
+function ni.objectsetup:new(objguid, objtype, objname)
+	if cache[objguid] then
 		return false
 	end
-	return ni.objectSetup:create(objguid, objtype, objname)
+	return ni.objectsetup:create(objguid, objtype, objname)
 end
-function ni.objects:updateObjects()
+function ni.objects:updateobjects()
 	for k, v in pairs(ni.objects) do
 		if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 			if v.lastupdate == nil or GetTime() >= (v.lastupdate + (math.random(1, 12) / 100)) then
 				v.lastupdate = GetTime()
 				if not v:exists() then
-					ni.objectSetup.cache[k] = nil
+					ni.objectsetup.cache[k] = nil
 					ni.objects[k] = nil
 				else
-					v:updateObject()
+					v:updateobject()
 				end
 			end
 		end

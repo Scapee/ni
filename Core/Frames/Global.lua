@@ -47,9 +47,9 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 	if self.st > throttle then
 		self.st = 0
 		if ni.vars.units.followEnabled then
-			if ni.objectManager.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
+			if ni.objectmanager.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
 				local unit = ni.vars.units.follow
-				local uGUID = ni.objectManager.objectGUID(unit) or UnitGUID(unit)
+				local uGUID = ni.objectmanager.objectGUID(unit) or UnitGUID(unit)
 				local followTar = nil
 				local distance = nil
 				if UnitAffectingCombat(uGUID) then
@@ -70,19 +70,19 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 						ni.player.target(followTar)
 					end
 				end
-				if not ni.player.isFacing(uGUID) then
-					ni.player.lookAt(uGUID)
+				if not ni.player.isfacing(uGUID) then
+					ni.player.lookat(uGUID)
 				end
 				if
 					not UnitCastingInfo("player") and not UnitChannelInfo("player") and distance ~= nil and distance > 1 and
 						distance < 50 and
 						GetTime() - lastclick > 1.5
 				 then
-					ni.player.moveTo(uGUID)
+					ni.player.moveto(uGUID)
 					lastclick = GetTime()
 				end
-				if distance ~= nil and distance <= 1 and ni.player.isMoving() then
-					ni.player.stopMoving()
+				if distance ~= nil and distance <= 1 and ni.player.ismoving() then
+					ni.player.stopmoving()
 				end
 			end
 		end
@@ -117,7 +117,7 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 			end
 			if ni.vars.profiles.active ~= "none" and ni.vars.profiles.active ~= "None" then
 				if ni[_class].rotation ~= nil then
-					ni[_class].startRotation()
+					ni[_class].startrotation()
 				end
 			end
 		else
