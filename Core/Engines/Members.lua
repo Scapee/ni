@@ -1,4 +1,4 @@
-local GetNumRaidMembers, GetNumPartyMembers, IsInRaid, GetNumGroupMembers, tinsert
+local GetNumRaidMembers, GetNumPartyMembers, IsInRaid, GetNumGroupMembers, tinsert = GetNumRaidMembers, GetNumPartyMembers, IsInRaid, GetNumGroupMembers, tinsert
 
 ni.memberSetup = {}
 ni.memberSetup.cache = {}
@@ -170,7 +170,7 @@ function ni.memberSetup:new(unit)
 	if unit and type(unit) == "string" then
 		o.unit = unit
 	end
-	function o:isTank()
+	function o:istank()
 		local result = false
 		if select(2, UnitClass(o.unit)) == "WARRIOR" and ni.unit.aura(o.guid, 71) then
 			result = true
@@ -189,7 +189,7 @@ function ni.memberSetup:new(unit)
 	function o:buffType(str)
 		return ni.unit.bufftype(o.guid, str)
 	end
-	function o:dispel()
+	function o:Dispel()
 		local dispelthem = false
 		local _, class = UnitClass("player")
 		if class == "DRUID" then
@@ -289,11 +289,11 @@ function ni.memberSetup:new(unit)
 		o.guid = o:nGUID()
 		o.guidsh = select(2, o:nGUID())
 		o.range = o:rangeCheck()
-		o.dispel = o:dispel()
+		o.dispel = o:Dispel()
 		o.hp = o:calculateHp()
 		o.threat = ni.unit.threat(o.unit)
 		o.target = tostring(o.unit) .. "target"
-		o.isTank = o:isTank()
+		o.isTank = o:istank()
 		ni.memberSetup.cache[select(2, Nova_GUID(o.unit))] = o
 	end
 	ni.memberSetup.cache[select(2, o:nGUID())] = o

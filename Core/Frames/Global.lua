@@ -116,7 +116,7 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 				local func = tremove(qRec, 1)
 				local args = tremove(qRec, 1)
 				local id, tar = unpack(args)
-				ni.info.update(id, true)
+				ni.frames.spellqueue.update(id, true)
 				if ni.spell.available(id, true) then
 					count = count - 1
 					func(id, tar)
@@ -126,10 +126,10 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 				end
 			end
 			if #ni.spell.queue == 0 then
-				ni.info.update()
+				ni.frames.spellqueue.update()
 			end
 			if ni.vars.profiles.active ~= "none" and ni.vars.profiles.active ~= "None" then
-				if ni[class].rotation ~= nil then
+				if ni[class].startrotation ~= nil then
 					ni[class].startrotation()
 				end
 			end

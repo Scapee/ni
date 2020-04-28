@@ -185,7 +185,7 @@ ni.spell = {
 		end
 		for k, v in pairs(ni.spell.queue) do
 			if tContains(v[2], id) then
-				ni.info.update()
+				ni.frames.spellqueue.update()
 				tremove(ni.spell.queue, k)
 				return
 			end
@@ -205,7 +205,7 @@ ni.spell = {
 	los = function(...)
 		local t = ...
 		if t == nil then
-			return false;
+			return false
 		end
 
 		if (ni.tables.whitelistedlosunits[ni.unit.id(t)]) then

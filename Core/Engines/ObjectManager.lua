@@ -6,7 +6,6 @@ local UnitName, UnitGUID, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAt
 	UnitCanAssist,
 	UnitCanAttack
 
-local objectsetup = {}
 local cache = {}
 cache.__index = {
 	guid = 0,
@@ -67,6 +66,7 @@ ni.objectmanager = {
 		end
 	end
 }
+ni.objectsetup = {}
 setmetatable(
 	ni.objects,
 	{

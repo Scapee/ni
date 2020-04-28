@@ -34,7 +34,7 @@ ni.frames.spellqueueholder:ClearAllPoints();
 ni.frames.spellqueueholder:SetHeight(30);
 ni.frames.spellqueueholder:SetWidth(275);
 ni.frames.spellqueueholder:SetMovable(true);
-ni.frames.spellqueueholder:SnableMouse(true);
+ni.frames.spellqueueholder:EnableMouse(true);
 ni.frames.spellqueueholder:RegisterForDrag("LeftButton");
 ni.frames.spellqueueholder:SetBackdrop(
 	{
@@ -77,8 +77,8 @@ function ni.frames.spellqueue.update(str, bool)
 end
 
 ni.frames.floatingtext = CreateFrame("Frame");
-ni.frames.floatingtext:setSize(400, 30);
-ni.frames.floatingtext:setAlpha(0);
+ni.frames.floatingtext:SetSize(400, 30);
+ni.frames.floatingtext:SetAlpha(0);
 ni.frames.floatingtext:SetPoint("CENTER", 0, 80);
 ni.frames.floatingtext.text = ni.frames.floatingtext:CreateFontString(nil, "OVERLAY", "MovieSubtitleFont");
 ni.frames.floatingtext.text:SetAllPoints();
@@ -115,7 +115,7 @@ end
 
 ni.getspellidfromactionbar = function()
 	local focus = GetMouseFocus():GetName();
-	if string.match(focus, "Button") then;
+	if string.match(focus, "Button") then
 		local button = _G[focus];
 		local slot =
 			ActionButton_GetPagedID(button) or ActionButton_CalculateAction(button) or button:GetAttribute("action") or 0;
