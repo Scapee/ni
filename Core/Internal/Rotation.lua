@@ -87,10 +87,10 @@ ni.rotation = {
 				cdtogglemod = GetTime()
 				if ni.vars.combat.cd then
 					ni.vars.combat.cd = false
-					ni.floatingtext:message("Cooldown toggle: \124cffff0000Disabled")
+					ni.frames.floatingtext:message("Cooldown toggle: \124cffff0000Disabled")
 				else
 					ni.vars.combat.cd = true
-					ni.floatingtext:message("Cooldown toggle: \124cff00ff00Enabled")
+					ni.frames.floatingtext:message("Cooldown toggle: \124cff00ff00Enabled")
 				end
 			end
 		end

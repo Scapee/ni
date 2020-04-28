@@ -6,13 +6,6 @@ local UnitName, UnitGUID, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAt
 	UnitCanAssist,
 	UnitCanAttack
 
-local cache = {}
-cache.__index = {
-	guid = 0,
-	name = "Unknown",
-	type = 0
-}
-
 ni.objectmanager = {
 	get = function()
 		return ni.functions.getobjects()
@@ -49,7 +42,7 @@ ni.objectmanager = {
 		end
 	end,
 	onupdate = function(self, elapsed)
-		if ni.objects ~= nil and ni.functions.getOM ~= nil then
+		if ni.objects ~= nil and ni.functions.getobjects ~= nil then
 			local throttle = 1 / GetFramerate()
 			self.st = elapsed + (self.st or 0)
 			if self.st > throttle then
@@ -67,14 +60,20 @@ ni.objectmanager = {
 	end
 }
 ni.objectsetup = {}
+ni.objectsetup.cache = {}
+ni.objectsetup.cache.__index = {
+	guid = 0,
+	name = "Unknown",
+	type = 0
+}
 setmetatable(
 	ni.objects,
 	{
 		__index = function(t, k)
 			local guid = true and UnitGUID(k) or nil
 			if guid ~= nil then
-				if cache[guid] ~= nil then
-					return cache[guid]
+				if ni.objectsetup.cache[guid] ~= nil then
+					return ni.objectsetup.cache[guid]
 				end
 				local _, _, _, _, otype = ni.unit.info(guid)
 				local name = UnitName(guid)
@@ -86,8 +85,8 @@ setmetatable(
 	}
 )
 function ni.objectsetup:get(objguid, objtype, objname)
-	if cache[objguid] then
-		return cache[objguid]
+	if ni.objectsetup.cache[objguid] then
+		return ni.objectsetup.cache[objguid]
 	else
 		return ni.objectsetup:create(objguid, objtype, objname)
 	end
@@ -192,11 +191,11 @@ function ni.objectsetup:create(objguid, objtype, objname)
 		o.type = o.type
 		o:calculatettd()
 	end
-	cache[objguid] = o
+	ni.objectsetup.cache[objguid] = o
 	return o
 end
 function ni.objectsetup:new(objguid, objtype, objname)
-	if cache[objguid] then
+	if ni.objectsetup.cache[objguid] then
 		return false
 	end
 	return ni.objectsetup:create(objguid, objtype, objname)
