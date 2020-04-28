@@ -1,4 +1,4 @@
-local getNumRaidMembers, getNumPartyMembers, isInRaid, getNumGroupMembers, tinsert
+local GetNumRaidMembers, GetNumPartyMembers, IsInRaid, GetNumGroupMembers, tinsert
 
 ni.memberSetup = {}
 ni.memberSetup.cache = {}
@@ -8,8 +8,8 @@ ni.cantheal = {30843, 41292, 55593, 45996}
 ni.badDebuffList = {}
 ni.metaTable1.__call = function(_, ...)
 	if ni.vars.build == 30300 then
-		local group = getNumRaidMembers() > 0 and "raid" or "party"
-		local groupSize = group == "raid" and getNumRaidMembers() or getNumPartyMembers()
+		local group = GetNumRaidMembers() > 0 and "raid" or "party"
+		local groupSize = group == "raid" and GetNumRaidMembers() or GetNumPartyMembers()
 		if group == "party" then
 			tinsert(ni.members, ni.memberSetup:new("player"))
 		end
@@ -21,8 +21,8 @@ ni.metaTable1.__call = function(_, ...)
 			end
 		end
 	else
-		local group = isInRaid() and "raid" or "party"
-		local groupSize = isInRaid() and getNumGroupMembers() or getNumGroupMembers() - 1
+		local group = IsInRaid() and "raid" or "party"
+		local groupSize = IsInRaid() and GetNumGroupMembers() or GetNumGroupMembers() - 1
 		if group == "party" then
 			tinsert(ni.members, ni.memberSetup:new("player"))
 		end
@@ -53,12 +53,12 @@ ni.memberSetup.__index = {
 	target = "noobtarget",
 	isTank = false
 }
-local function nova_GUID(unit)
+local function Nova_GUID(unit)
 	local nShortHand = ""
 	local targetGUID
-	if unitExists(unit) then
-		if unitIsPlayer(unit) then
-			targetGUID = unitGUID(unit)
+	if UnitExists(unit) then
+		if UnitIsPlayer(unit) then
+			targetGUID = UnitGUID(unit)
 		else
 			targetGUID = tonumber((UnitGUID(unit)):sub(-12, -9), 16)
 		end
@@ -66,7 +66,7 @@ local function nova_GUID(unit)
 	end
 	return targetGUID, nShortHand
 end
-local function checkBadDebuff(tar)
+local function CheckBadDebuff(tar)
 	for i = 1, #ni.badDebuffList do
 		if ni.unit.debuff(tar, ni.badDebuffList[i]) then
 			return false
@@ -74,25 +74,25 @@ local function checkBadDebuff(tar)
 	end
 	return true
 end
-local function checkCreatureType(tar)
-	local creatureTypeList = {"Critter", "Totem", "Non-combat pet", "Wild pet"}
+local function CheckCreatureType(tar)
+	local CreatureTypeList = {"Critter", "Totem", "Non-combat Pet", "Wild Pet"}
 	for i = 1, #CreatureTypeList do
-		if unitCreatureType(tar) == creatureTypeList[i] then
+		if UnitCreatureType(tar) == CreatureTypeList[i] then
 			return false
 		end
 	end
-	if not unitIsBattlePet(tar) and not unitIsWildBattlePet(tar) then
+	if not UnitIsBattlePet(tar) and not UnitIsWildBattlePet(tar) then
 		return true
 	else
 		return false
 	end
 end
-local function healCheck(tar)
+local function HealCheck(tar)
 	if
-		((UnitCanCooperate("player", tar) and not unitIsCharmed(tar) and not unitIsDeadOrGhost(tar) and ni.unit.exists(tar)) or
-			unitIsUnit("player", tar)) and
-			checkBadDebuff(tar) and
-			checkCreatureType(tar)
+		((UnitCanCooperate("player", tar) and not UnitIsCharmed(tar) and not UnitIsDeadOrGhost(tar) and ni.unit.exists(tar)) or
+			UnitIsUnit("player", tar)) and
+			CheckBadDebuff(tar) and
+			CheckCreatureType(tar)
 	 then
 		return true
 	else
@@ -113,7 +113,7 @@ ni.addblacklistdebuff = function(id)
 end
 ni.dontdispel = function(t)
 	for i = 1, #ni.blacklistID do
-		if unitDebuff(t, getSpellInfo(ni.blacklistID[i])) then
+		if UnitDebuff(t, GetSpellInfo(ni.blacklistID[i])) then
 			return true
 		end
 	end
@@ -122,47 +122,47 @@ end
 ni.validDispel = function(t)
 	local hasValidDispel = false
 	local i = 1
-	local debuff = unitDebuff(t, i)
+	local debuff = UnitDebuff(t, i)
 	if ni.dontdispel(t) then
 		return false
 	end
-	local _, class = unitClass("player")
+	local _, class = UnitClass("player")
 	while debuff do
-		local debuffType = select(5, unitDebuff(t, i))
+		local debuffType = select(5, UnitDebuff(t, i))
 		if class == "PALADIN" then
 			if tContains(ni.unitDispel.paladin, debuffType) then
 				hasValidDispel = true
 				break
 			end
 			i = i + 1
-			debuff = unitDebuff(t, i)
+			debuff = UnitDebuff(t, i)
 		elseif class == "SHAMAN" then
 			if tContains(ni.unitDispel.shaman, debuffType) then
 				hasValidDispel = true
 				break
 			end
 			i = i + 1
-			debuff = unitDebuff(t, i)
+			debuff = UnitDebuff(t, i)
 		elseif class == "PRIEST" then
 			if tContains(ni.unitDispel.priest, debuffType) then
 				hasValidDispel = true
 				break
 			end
 			i = i + 1
-			debuff = unitDebuff(t, i)
+			debuff = UnitDebuff(t, i)
 		elseif class == "DRUID" then
 			if tContains(ni.unitDispel.druid, debuffType) then
 				hasValidDispel = true
 				break
 			end
 			i = i + 1
-			debuff = unitDebuff(t, i)
+			debuff = UnitDebuff(t, i)
 		end
 	end
-	return hasValidDispel
+	return HasValidDispel
 end
 function ni.memberSetup:new(unit)
-	if ni.memberSetup.cache[select(2, nova_GUID(unit))] then
+	if ni.memberSetup.cache[select(2, Nova_GUID(unit))] then
 		return false
 	end
 	local o = {}
@@ -172,10 +172,10 @@ function ni.memberSetup:new(unit)
 	end
 	function o:isTank()
 		local result = false
-		if select(2, unitClass(o.unit)) == "WARRIOR" and ni.unit.aura(o.guid, 71) then
+		if select(2, UnitClass(o.unit)) == "WARRIOR" and ni.unit.aura(o.guid, 71) then
 			result = true
 		end
-		if select(2, unitClass(o.unit)) == "DRUID" and ni.unit.buff(o.unit, 9634) then
+		if select(2, UnitClass(o.unit)) == "DRUID" and ni.unit.buff(o.unit, 9634) then
 			result = true
 		end
 		if ni.unit.aura(o.guid, 57340) then
@@ -191,10 +191,10 @@ function ni.memberSetup:new(unit)
 	end
 	function o:dispel()
 		local dispelthem = false
-		local _, class = unitClass("player")
+		local _, class = UnitClass("player")
 		if class == "DRUID" then
 			local k = 1
-			while unitDebuff(o.unit, k) do
+			while UnitDebuff(o.unit, k) do
 				if ni.validDispel(o.unit) then
 					dispelthem = true
 					break
@@ -203,7 +203,7 @@ function ni.memberSetup:new(unit)
 			end
 		elseif class == "SHAMAN" then
 			local k = 1
-			while unitDebuff(o.unit, k) do
+			while UnitDebuff(o.unit, k) do
 				if ni.validDispel(o.unit) then
 					dispelthem = true
 					break
@@ -212,7 +212,7 @@ function ni.memberSetup:new(unit)
 			end
 		elseif class == "PALADIN" then
 			local k = 1
-			while unitDebuff(o.unit, k) do
+			while UnitDebuff(o.unit, k) do
 				if ni.validDispel(o.unit) then
 					dispelthem = true
 					break
@@ -221,7 +221,7 @@ function ni.memberSetup:new(unit)
 			end
 		elseif class == "PRIEST" then
 			local k = 1
-			while unitDebuff(o.unit, k) do
+			while UnitDebuff(o.unit, k) do
 				if ni.validDispel(o.unit) then
 					dispelthem = true
 					break
@@ -235,31 +235,31 @@ function ni.memberSetup:new(unit)
 		return false
 	end
 	function o:calculateHp()
-		local percent = 100 * unitHealth(o.unit) / unitHealthMax(o.unit)
-		local actual = (UnitHealthMax(o.unit) - unitHealth(o.unit))
+		local Percent = 100 * UnitHealth(o.unit) / UnitHealthMax(o.unit)
+		local Actual = (UnitHealthMax(o.unit) - UnitHealth(o.unit))
 		if o.role == "TANK" then
-			percent = percent - 5
+			percent = Percent - 5
 		end
-		if unitIsDeadOrGhost(o.unit) == 1 then
+		if UnitIsDeadOrGhost(o.unit) == 1 then
 			percent = 250
 		end
 		if o.dispel then
-			percent = percent - 2
+			percent = Percent - 2
 		end
 		for i = 1, #ni.cantheal do
 			if ni.unit.debuff(o.unit, ni.cantheal[i]) then
 				percent = 100
-				actual = unitHealthMax(o.unit)
+				actual = UnitHealthMax(o.unit)
 			end
 		end
-		return percent, actual
+		return Percent, Actual
 	end
 	function o:nGUID()
 		local nSH = nil
 		local targetGUID
-		if unitExists(o.unit) then
-			if unitIsPlayer(o.unit) then
-				targetGUID = unitGUID(o.unit)
+		if UnitExists(o.unit) then
+			if UnitIsPlayer(o.unit) then
+				targetGUID = UnitGUID(o.unit)
 			else
 				targetGUID = tonumber((UnitGUID(o.unit)):sub(-12, -9), 16)
 			end
@@ -284,8 +284,8 @@ function ni.memberSetup:new(unit)
 		return range
 	end
 	function o:updateUnit()
-		o.name = unitName(o.unit)
-		o.class = select(2, unitClass(o.unit))
+		o.name = UnitName(o.unit)
+		o.class = select(2, UnitClass(o.unit))
 		o.guid = o:nGUID()
 		o.guidsh = select(2, o:nGUID())
 		o.range = o:rangeCheck()
@@ -294,7 +294,7 @@ function ni.memberSetup:new(unit)
 		o.threat = ni.unit.threat(o.unit)
 		o.target = tostring(o.unit) .. "target"
 		o.isTank = o:isTank()
-		ni.memberSetup.cache[select(2, nova_GUID(o.unit))] = o
+		ni.memberSetup.cache[select(2, Nova_GUID(o.unit))] = o
 	end
 	ni.memberSetup.cache[select(2, o:nGUID())] = o
 	return o
@@ -302,7 +302,7 @@ end
 function ni.setupTables()
 	setmetatable(ni.members, ni.metaTable1)
 	function ni.members:update(MO)
-		local mouseoverCheck = mO or true
+		local MouseoverCheck = MO or true
 		for i = 1, #ni.members do
 			ni.members[i]:updateUnit()
 		end
@@ -343,13 +343,13 @@ ni.numberbelow = function(n)
 	return total
 end
 ni.totemdispelcount = function()
-	local dispelNumbers = 0
+	local DispelNumbers = 0
 	for i = 1, #ni.members do
 		if ni.spell.validTotemDispel(ni.members[i].unit) then
-			dispelNumbers = dispelNumbers + 1
+			dispelNumbers = DispelNumbers + 1
 		end
 	end
-	return dispelNumbers
+	return DispelNumbers
 end
 ni.tanks = function()
 	if ni.vars.units.mainTankEnabled and ni.vars.units.offTankEnabled then
@@ -358,7 +358,7 @@ ni.tanks = function()
 	local tanks = {}
 	for i = 1, #ni.members do
 		if ni.members[i].isTank then
-			tinsert(tanks, {unit = ni.members[i].unit, health = unitHealthMax(ni.members[i].unit)})
+			tinsert(tanks, {unit = ni.members[i].unit, health = UnitHealthMax(ni.members[i].unit)})
 		end
 	end
 	if #tanks > 1 then
@@ -396,19 +396,19 @@ ni.tanks = function()
 	end
 end
 ni.averageHealth = function(n)
-	local numberOfPeople = n
-	local vasa_Average = 0
-	if #ni.members < numberOfPeople then
-		for i = numberOfPeople, 0, -1 do
+	local NumberOfPeople = n
+	local Vasa_Average = 0
+	if #ni.members < NumberOfPeople then
+		for i = NumberOfPeople, 0, -1 do
 			if #ni.members >= i then
 				numberOfPeople = i
 				break
 			end
 		end
 	end
-	for i = 1, numberOfPeople do
-		vasa_Average = vasa_Average + ni.members[i].hp
+	for i = 1, NumberOfPeople do
+		vasa_Average = Vasa_Average + ni.members[i].hp
 	end
-	vasa_Average = vasa_Average / numberOfPeople
-	return vasa_Average, numberOfPeople
+	vasa_Average = Vasa_Average / NumberOfPeople
+	return Vasa_Average, NumberOfPeople
 end

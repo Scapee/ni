@@ -1,27 +1,27 @@
-local getGlyphSocketInfo,
-	getContainerNumSlots,
-	getContainerItemID,
-	getItemSpell,
-	getInventoryItemID,
-	getItemCooldown,
-	getSpellCooldown,
-	getTime,
-	unitClass,
-	isFalling,
-	unitExists,
-	isSpellInRange =
-	getGlyphSocketInfo,
-	getContainerNumSlots,
-	getContainerItemID,
-	getItemSpell,
-	getInventoryItemID,
-	getItemCooldown,
-	getSpellCooldown,
-	getTime,
-	unitClass,
-	isFalling,
-	unitExists,
-	isSpellInRange
+local GetGlyphSocketInfo,
+	GetContainerNumSlots,
+	GetContainerItemID,
+	GetItemSpell,
+	GetInventoryItemID,
+	GetItemCooldown,
+	GetSpellCooldown,
+	GetTime,
+	UnitClass,
+	IsFalling,
+	UnitExists,
+	IsSpellInRange =
+	GetGlyphSocketInfo,
+	GetContainerNumSlots,
+	GetContainerItemID,
+	GetItemSpell,
+	GetInventoryItemID,
+	GetItemCooldown,
+	GetSpellCooldown,
+	GetTime,
+	UnitClass,
+	IsFalling,
+	UnitExists,
+	IsSpellInRange
 
 ni.player = {
 	debuffType = function(str)
@@ -132,23 +132,23 @@ ni.player = {
 	hasGlyph = function(glyphID)
 		local hasglyph = false
 		local i = 1
-		local glyph = getGlyphSocketInfo(i)
+		local glyph = GetGlyphSocketInfo(i)
 		while glyph do
-			local id = select(3, getGlyphSocketInfo(i))
+			local id = select(3, GetGlyphSocketInfo(i))
 			if id == glyphID then
 				hasglyph = true
 				break
 			end
 			i = i + 1
-			glyph = getGlyphSocketInfo(i)
+			glyph = GetGlyphSocketInfo(i)
 		end
 		return hasglyph
 	end,
 	hasItem = function(item)
 		local hasitem = false
 		for b = 0, 4 do
-			for s = 1, getContainerNumSlots(b) do
-				if getContainerItemID(b, s) == item then
+			for s = 1, GetContainerNumSlots(b) do
+				if GetContainerItemID(b, s) == item then
 					hasitem = true
 					break
 				end
@@ -159,7 +159,7 @@ ni.player = {
 	itemEquipped = function(id)
 		local itemequipped = false
 		for i = 1, 19 do
-			if getInventoryItemID("player", i) == id then
+			if GetInventoryItemID("player", i) == id then
 				itemequipped = true
 				break
 			end
@@ -167,10 +167,10 @@ ni.player = {
 		return itemequipped
 	end,
 	slotCd = function(slotnum)
-		if getItemSpell(GetInventoryItemID("player", slotnum)) == nil then
+		if GetItemSpell(GetInventoryItemID("player", slotnum)) == nil then
 			return true
 		end
-		local start, duration, enable = getItemCooldown(GetInventoryItemID("player", slotnum))
+		local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", slotnum))
 		if (start > 0 and duration > 0) then
 			return true
 		else
@@ -178,45 +178,45 @@ ni.player = {
 		end
 	end,
 	itemCd = function(item)
-		local start, duration, enable = getItemCooldown(item)
+		local start, duration, enable = GetItemCooldown(item)
 		if (start > 0 and duration > 0) then
-			return start + duration - getTime()
+			return start + duration - GetTime()
 		end
 
 		return 0
 	end,
 	petCd = function(spell)
-		local start, duration, enable = getSpellCooldown(spell)
+		local start, duration, enable = GetSpellCooldown(spell)
 		if (start > 0 and duration > 0) then
-			return start + duration - getTime()
+			return start + duration - GetTime()
 		else
 			return 0
 		end
 	end,
 	canHeal = function(t)
-		local _, class = unitClass("player")
+		local _, class = UnitClass("player")
 		local heal = nil
 
 		if class == "PALADIN" then
-			heal = "Holy light"
+			heal = "Holy Light"
 		elseif class == "PRIEST" then
 			heal = "Renew"
 		elseif class == "DRUID" then
-			heal = "Healing touch"
+			heal = "Healing Touch"
 		elseif class == "SHAMAN" then
-			heal = "Healing wave"
+			heal = "Healing Wave"
 		elseif class == "MONK" then
-			heal = "Healing surge"
+			heal = "Healing Surge"
 		end
 
-		if unitExists(t) and isSpellInRange(heal, t) == 1 then
+		if UnitExists(t) and IsSpellInRange(heal, t) == 1 then
 			return true
 		end
 
 		return false
 	end,
 	hasHeal = function()
-		local _, class = unitClass("player")
+		local _, class = UnitClass("player")
 		local has = false
 
 		if class == "PALADIN" then
@@ -232,7 +232,7 @@ ni.player = {
 		return has
 	end,
 	isMoving = function()
-		if ni.unit.isMoving("player") or isFalling() then
+		if ni.unit.isMoving("player") or IsFalling() then
 			return true
 		end
 

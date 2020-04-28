@@ -1,16 +1,16 @@
-local unitHealth, getTime, unitIsDeadOrGhost, unitHealthMax = unitHealth, getTime, unitIsDeadOrGhost, unitHealthMax
+local UnitHealth, GetTime, UnitIsDeadOrGhost, UnitHealthMax = UnitHealth, GetTime, UnitIsDeadOrGhost, UnitHealthMax
 
 ni.ttd = {
 	calculate = function(o)
-		if (o:unit() or o:player()) and o:canAttack() and not unitIsDeadOrGhost(o.guid) and o:combat() then
+		if (o:unit() or o:player()) and o:canAttack() and not UnitIsDeadOrGhost(o.guid) and o:combat() then
 			if o.timeincombat == nil then
-				o.timeincombat = getTime()
+				o.timeincombat = GetTime()
 			end
 
-			local currenthp = unitHealth(o.guid)
-			local maxhp = unitHealthMax(o.guid)
+			local currenthp = UnitHealth(o.guid)
+			local maxhp = UnitHealthMax(o.guid)
 			local diff = maxhp - currenthp
-			local duration = getTime() - o.timeincombat
+			local duration = GetTime() - o.timeincombat
 			local _dps = diff / duration
 			local death = 0
 

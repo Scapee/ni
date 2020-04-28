@@ -1,4 +1,4 @@
-local unitName, unitGUID, unitPower, unitPowerMax, unitAffectingCombat, getTime, unitCanAssist, unitCanAttack =
+local UnitName, UnitGUID, UnitPower, UnitPowerMax, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAttack =
 	unitName,
 	unitGUID,
 	unitPower,
@@ -13,7 +13,7 @@ ni.objectManager = {
 		return ni.functions.getOM()
 	end,
 	contains = function(o)
-		local tmp = unitName(o)
+		local tmp = UnitName(o)
 
 		if tmp ~= nil then
 			o = tmp
@@ -31,7 +31,7 @@ ni.objectManager = {
 		if tonumber(o) ~= nil then
 			return o
 		else
-			local tmp = unitName(o)
+			local tmp = UnitName(o)
 			if tmp ~= nil then
 				o = tmp
 			end
@@ -50,13 +50,13 @@ setmetatable(
 	ni.objects,
 	{
 		__index = function(t, k)
-			local guid = true and unitGUID(k) or nil
+			local guid = true and UnitGUID(k) or nil
 			if guid ~= nil then
 				if ni.objectSetup.cache[guid] ~= nil then
 					return ni.objectSetup.cache[guid]
 				end
 				local _, _, _, _, otype = ni.unit.info(guid)
-				local name = unitName(guid)
+				local name = UnitName(guid)
 				local ob = ni.objectSetup:get(guid, otype, name)
 				return ob
 			end
@@ -177,7 +177,7 @@ function ni.objectSetup:create(objguid, objtype, objname)
 	function o:updateObject()
 		local _, _, _, _, obtype = ni.unit.info(o.guid)
 		o.guid = o.guid
-		o.name = o.name ~= "Unknown" and o.name or unitName(o.guid)
+		o.name = o.name ~= "Unknown" and o.name or UnitName(o.guid)
 		o.type = o.type
 		o:calculateTtd()
 	end
@@ -193,8 +193,8 @@ end
 function ni.objects:updateObjects()
 	for k, v in pairs(ni.objects) do
 		if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
-			if v.lastupdate == nil or getTime() >= (v.lastupdate + (math.random(1, 12) / 100)) then
-				v.lastupdate = getTime()
+			if v.lastupdate == nil or GetTime() >= (v.lastupdate + (math.random(1, 12) / 100)) then
+				v.lastupdate = GetTime()
 				if not v:exists() then
 					ni.objectSetup.cache[k] = nil
 					ni.objects[k] = nil

@@ -1,38 +1,38 @@
-local unitClass,
-	createFrame,
-	getZoneText,
-	unitExists,
-	unitGUID,
-	unitAffectingCombat,
-	isMounted,
-	unitIsUnit,
-	unitCastingInfo,
-	unitChannelInfo,
-	getTime,
+local UnitClass,
+	CreateFrame,
+	GetZoneText,
+	UnitExists,
+	UnitGUID,
+	UnitAffectingCombat,
+	IsMounted,
+	UnitIsUnit,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	GetTime,
 	tremove,
 	tinsert,
 	unpack =
-	unitClass,
-	createFrame,
-	getZoneText,
-	unitExists,
-	unitGUID,
-	unitAffectingCombat,
-	isMounted,
-	unitIsUnit,
-	unitCastingInfo,
-	unitChannelInfo,
-	getTime,
+	UnitClass,
+	CreateFrame,
+	GetZoneText,
+	UnitExists,
+	UnitGUID,
+	UnitAffectingCombat,
+	IsMounted,
+	UnitIsUnit,
+	UnitCastingInfo,
+	UnitChannelInfo,
+	GetTime,
 	tremove,
 	tinsert,
 	unpack
 
-local _, _class = unitClass("player")
+local _, _class = UnitClass("player")
 
 local lastclick = 0
-ni.frames.global = createFrame("Frame")
+ni.frames.global = CreateFrame("Frame")
 ni.frames.global_OnUpdate = function(self, elapsed)
-	if unitExists == nil or ni.functions.cast == nil or not getZoneText() then
+	if UnitExists == nil or ni.functions.cast == nil or not GetZoneText() then
 		return true
 	end
 	if select(11, ni.player.debuff(9454)) == 9454 then
@@ -47,26 +47,26 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 	if self.st > throttle then
 		self.st = 0
 		if ni.vars.units.followEnabled then
-			if ni.objectManager.contains(ni.vars.units.follow) or unitExists(ni.vars.units.follow) then
+			if ni.objectManager.contains(ni.vars.units.follow) or UnitExists(ni.vars.units.follow) then
 				local unit = ni.vars.units.follow
-				local uGUID = ni.objectManager.objectGUID(unit) or unitGUID(unit)
+				local uGUID = ni.objectManager.objectGUID(unit) or UnitGUID(unit)
 				local followTar = nil
 				local distance = nil
-				if unitAffectingCombat(uGUID) then
+				if UnitAffectingCombat(uGUID) then
 					local oTar = select(6, ni.unit.info(uGUID))
 					if oTar ~= nil then
 						followTar = oTar
 					end
 				end
 				distance = ni.player.distance(uGUID)
-				if not isMounted() then
+				if not IsMounted() then
 					if followTar ~= nil and ni.vars.combat.isMelee == true then
 						distance = ni.player.distance(followTar)
 						uGUID = followTar
 					end
 				end
 				if followTar ~= nil then
-					if not unitIsUnit("target", followTar) then
+					if not UnitIsUnit("target", followTar) then
 						ni.player.target(followTar)
 					end
 				end
@@ -74,12 +74,12 @@ ni.frames.global_OnUpdate = function(self, elapsed)
 					ni.player.lookAt(uGUID)
 				end
 				if
-					not unitCastingInfo("player") and not unitChannelInfo("player") and distance ~= nil and distance > 1 and
+					not UnitCastingInfo("player") and not UnitChannelInfo("player") and distance ~= nil and distance > 1 and
 						distance < 50 and
-						getTime() - lastclick > 1.5
+						GetTime() - lastclick > 1.5
 				 then
 					ni.player.moveTo(uGUID)
-					lastclick = getTime()
+					lastclick = GetTime()
 				end
 				if distance ~= nil and distance <= 1 and ni.player.isMoving() then
 					ni.player.stopMoving()

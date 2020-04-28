@@ -1,6 +1,6 @@
-local createFrame = createFrame
+local CreateFrame = CreateFrame
 
-ni.frames.healing = createFrame("frame", nil)
+ni.frames.healing = CreateFrame("frame", nil)
 ni.frames.healing:registerEvent("PARTY_MEMBERS_CHANGED")
 ni.frames.healing:registerEvent("RAID_ROSTER_UPDATE")
 ni.frames.healing:registerEvent("GROUP_ROSTER_UPDATE")

@@ -1,37 +1,37 @@
-local unitGUID,
-	unitCanAttack,
+local UnitGUID,
+	UnitCanAttack,
 	tinsert,
 	tonumber,
-	unitLevel,
-	unitHealth,
-	unitHealthMax,
-	unitExists,
-	unitThreatSituation,
-	getUnitSpeed,
-	unitIsDeadOrGhost,
-	unitReaction,
-	unitCastingInfo,
-	unitBuff,
-	getSpellInfo,
+	UnitLevel,
+	UnitHealth,
+	UnitHealthMax,
+	UnitExists,
+	UnitThreatSituation,
+	GetUnitSpeed,
+	UnitIsDeadOrGhost,
+	UnitReaction,
+	UnitCastingInfo,
+	UnitBuff,
+	GetSpellInfo,
 	tContains,
-	unitDebuff =
-	unitGUID,
-	unitCanAttack,
+	UnitDebuff =
+	UnitGUID,
+	UnitCanAttack,
 	tinsert,
 	tonumber,
-	unitLevel,
-	unitHealth,
-	unitHealthMax,
-	unitExists,
-	unitThreatSituation,
-	getUnitSpeed,
-	unitIsDeadOrGhost,
-	unitReaction,
-	unitCastingInfo,
-	unitBuff,
-	getSpellInfo,
+	UnitLevel,
+	UnitHealth,
+	UnitHealthMax,
+	UnitExists,
+	UnitThreatSituation,
+	GetUnitSpeed,
+	UnitIsDeadOrGhost,
+	UnitReaction,
+	UnitCastingInfo,
+	UnitBuff,
+	GetSpellInfo,
 	tContains,
-	unitDebuff
+	UnitDebuff
 
 ni.unit = {
 	creatureTypes = {
@@ -66,7 +66,7 @@ ni.unit = {
 	creations = function(unit)
 		if unit then
 			local t = {}
-			local guid = unitGUID(unit)
+			local guid = UnitGUID(unit)
 			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
 					local creator = v:creator()
@@ -104,25 +104,25 @@ ni.unit = {
 			return false
 		end
 
-		return unitLevel(t) == -1
+		return UnitLevel(t) == -1
 	end,
 	threat = function(t, u)
 		if u then
-			if unitExists(t) and unitExists(u) and unitThreatSituation(t, u) ~= nil then
-				return unitThreatSituation(t, u)
+			if UnitExists(t) and UnitExists(u) and UnitThreatSituation(t, u) ~= nil then
+				return UnitThreatSituation(t, u)
 			else
 				return 0
 			end
 		else
-			if unitExists(t) and unitThreatSituation(t) ~= nil then
-				return unitThreatSituation(t)
+			if UnitExists(t) and UnitThreatSituation(t) ~= nil then
+				return UnitThreatSituation(t)
 			else
 				return 0
 			end
 		end
 	end,
 	isMoving = function(t)
-		return getUnitSpeed(t) ~= 0
+		return GetUnitSpeed(t) ~= 0
 	end,
 	id = function(t)
 		if tonumber(t) then
@@ -144,8 +144,8 @@ ni.unit = {
 			return 99
 		end
 
-		if ni.unit.exists(t) and (not unitIsDeadOrGhost(t) and unitCanAttack("player", t) == 1) then
-			t = unitGUID(t)
+		if ni.unit.exists(t) and (not UnitIsDeadOrGhost(t) and UnitCanAttack("player", t) == 1) then
+			t = UnitGUID(t)
 		else
 			return -2
 		end
@@ -157,7 +157,7 @@ ni.unit = {
 		return 99
 	end,
 	hp = function(t)
-		return 100 * unitHealth(t) / unitHealthMax(t)
+		return 100 * UnitHealth(t) / UnitHealthMax(t)
 	end,
 	info = function(t)
 		if t == nil then
@@ -166,7 +166,7 @@ ni.unit = {
 		local tmp = t
 
 		if tonumber(tmp) == nil then
-			t = unitGUID(tmp)
+			t = UnitGUID(tmp)
 			if t == nil then
 				t = ni.objectManager.objectGUID(tmp)
 			end
@@ -187,11 +187,11 @@ ni.unit = {
 	end,
 	enemiesInRange = function(t, n)
 		local tmp = {}
-		local unit = true and unitGUID(t) or t
+		local unit = true and UnitGUID(t) or t
 		if unit then
 			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
-					if k ~= unit and v:canattack() and not unitIsDeadOrGhost(k) then
+					if k ~= unit and v:canattack() and not UnitIsDeadOrGhost(k) then
 						local distance = v:distance(unit)
 						if (distance ~= nil and distance <= n) then
 							tinsert(tmp, {guid = k, name = v.name, distance = distance})
@@ -204,11 +204,11 @@ ni.unit = {
 	end,
 	friendsInRange = function(t, n)
 		local tmp = {}
-		local unit = true and unitGUID(t) or t
+		local unit = true and UnitGUID(t) or t
 		if unit then
 			for k, v in pairs(ni.objects) do
 				if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
-					if k ~= unit and v:canassist() and not unitIsDeadOrGhost(k) then
+					if k ~= unit and v:canassist() and not UnitIsDeadOrGhost(k) then
 						local distance = v:distance(unit)
 						if (distance ~= nil and distance <= n) then
 							tinsert(tmp, {guid = k, name = v.name, distance = distance})
@@ -220,7 +220,7 @@ ni.unit = {
 		return tmp, #tmp
 	end,
 	unitsTargeting = function(t, f)
-		local unit = true and unitGUID(t) or t
+		local unit = true and UnitGUID(t) or t
 		local f = f and true or false
 		local returntable = {}
 
@@ -228,7 +228,7 @@ ni.unit = {
 			if not f then
 				for k, v in pairs(ni.objects) do
 					if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
-						if k ~= unit and unitReaction(unit, k) ~= nil and unitReaction(unit, k) <= 4 and not unitIsDeadOrGhost(k) then
+						if k ~= unit and UnitReaction(unit, k) ~= nil and UnitReaction(unit, k) <= 4 and not UnitIsDeadOrGhost(k) then
 							local target = v:target()
 							if target ~= nil and target == unit then
 								table.insert(returntable, {name = v.name, guid = k})
@@ -239,7 +239,7 @@ ni.unit = {
 			else
 				for k, v in pairs(ni.objects) do
 					if type(k) ~= "function" and (type(k) == "string" and type(v) == "table") then
-						if k ~= unit and unitReaction(unit, k) ~= nil and unitReaction(unit, k) > 4 then
+						if k ~= unit and UnitReaction(unit, k) ~= nil and UnitReaction(unit, k) > 4 then
 							local target = v:target()
 							if target ~= nil and target == unit then
 								table.insert(returntable, {name = v.name, guid = k})
@@ -252,7 +252,7 @@ ni.unit = {
 		return returntable, #returntable
 	end,
 	isCasting = function(t)
-		local name, _, _, _, _, _, _, id = unitCastingInfo(t)
+		local name, _, _, _, _, _, _, id = UnitCastingInfo(t)
 		if name and id == t then
 			return true
 		end
@@ -270,10 +270,10 @@ ni.unit = {
 		local st = ni.utils.splitStringToLower(str)
 		local has = false
 		local i = 1
-		local buff = unitBuff(t, i)
+		local buff = UnitBuff(t, i)
 
 		while buff do
-			local buffType = select(5, unitBuff(t, i))
+			local buffType = select(5, UnitBuff(t, i))
 			if buffType ~= nil then
 				local bTlwr = string.lower(buffType)
 				if tContains(st, bTlwr) then
@@ -282,7 +282,7 @@ ni.unit = {
 				end
 			end
 			i = i + 1
-			buff = unitBuff(t, i)
+			buff = UnitBuff(t, i)
 		end
 
 		return has
@@ -293,7 +293,7 @@ ni.unit = {
 		local spellName = ""
 
 		if tonumber(id) ~= nil then
-			spellName = getSpellInfo(id)
+			spellName = GetSpellInfo(id)
 		else
 			spellName = id
 			id = nil
@@ -303,16 +303,16 @@ ni.unit = {
 		end
 		if
 			caster ~= nil and
-				((id and exact and select(11, unitBuff(t, spellName, nil, caster)) == id) or
-					((not id or exact == false) and unitBuff(t, spellName, nil, caster)))
+				((id and exact and select(11, UnitBuff(t, spellName, nil, caster)) == id) or
+					((not id or exact == false) and UnitBuff(t, spellName, nil, caster)))
 		 then
-			return unitBuff(t, spellName, nil, caster)
+			return UnitBuff(t, spellName, nil, caster)
 		elseif
 			caster == nil and
-				((id and exact and select(11, unitBuff(t, spellName)) == id) or
-					((not id or exact == false) and unitBuff(t, spellName)))
+				((id and exact and select(11, UnitBuff(t, spellName)) == id) or
+					((not id or exact == false) and UnitBuff(t, spellName)))
 		 then
-			return unitBuff(t, spellName)
+			return UnitBuff(t, spellName)
 		end
 	end,
 	buffs = function(t, ids, caster, exact)
@@ -374,10 +374,10 @@ ni.unit = {
 		local st = ni.utils.splitStringToLower(str)
 		local has = false
 		local i = 1
-		local debuff = unitDebuff(t, i)
+		local debuff = UnitDebuff(t, i)
 
 		while debuff do
-			local debuffType = select(5, unitDebuff(t, i))
+			local debuffType = select(5, UnitDebuff(t, i))
 
 			if debuffType ~= nil then
 				local dTlwr = string.lower(debuffType)
@@ -388,7 +388,7 @@ ni.unit = {
 			end
 
 			i = i + 1
-			debuff = unitDebuff(t, i)
+			debuff = UnitDebuff(t, i)
 		end
 
 		return has
@@ -398,7 +398,7 @@ ni.unit = {
 		local spellName = ""
 
 		if tonumber(spellID) ~= nil then
-			spellName = getSpellInfo(spellID)
+			spellName = GetSpellInfo(spellID)
 		else
 			spellName = spellID
 			spellID = nil
@@ -409,16 +409,16 @@ ni.unit = {
 		end
 		if
 			caster == nil and
-				((spellID and exact and select(11, unitDebuff(t, spellName)) == spellID) or
-					((not spellID or exact == false) and unitDebuff(t, spellName)))
+				((spellID and exact and select(11, UnitDebuff(t, spellName)) == spellID) or
+					((not spellID or exact == false) and UnitDebuff(t, spellName)))
 		 then
-			return unitDebuff(t, spellName)
+			return UnitDebuff(t, spellName)
 		elseif
 			caster ~= nil and
-				((spellID and exact and select(11, unitDebuff(t, spellName, nil, caster)) == spellID) or
-					((not spellID or exact == false) and unitDebuff(t, spellName, nil, caster)))
+				((spellID and exact and select(11, UnitDebuff(t, spellName, nil, caster)) == spellID) or
+					((not spellID or exact == false) and UnitDebuff(t, spellName, nil, caster)))
 		 then
-			return unitDebuff(t, spellName, nil, caster)
+			return UnitDebuff(t, spellName, nil, caster)
 		end
 	end,
 	debuffs = function(t, spellIDs, caster, exact)

@@ -1,6 +1,6 @@
-local unitClass = unitClass
+local UnitClass = UnitClass
 
-local _, _class = unitClass("player")
+local _, _class = UnitClass("player")
 
 ni = {}
 ni.frames = {}
@@ -36,7 +36,7 @@ ni.functions = {
 	loadLua = %%LoadFile%%,
 	test = %%Test%%,
 	objectExists = %%ObjectExists%%,
-	los = %%LoS%%,
+	loS = %%LoS%%,
 	unitCreator = %%UnitCreator%%,
 	creatureType = %%CreatureType%%,
 	combatReach = %%CombatReach%%,

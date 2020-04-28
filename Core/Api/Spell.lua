@@ -1,51 +1,51 @@
-local getSpellCooldown,
-	getTime,
-	getSpellInfo,
-	getNetStats,
+local GetSpellCooldown,
+	GetTime,
+	GetSpellInfo,
+	GetNetStats,
 	tonumber,
-	unitIsDeadOrGhost,
-	unitCanAttack,
-	isSpellInRange,
-	isSpellKnown,
-	unitPower,
-	unitClass,
-	getShapeshiftForm,
-	unitCastingInfo,
-	unitChannelInfo,
+	UnitIsDeadOrGhost,
+	UnitCanAttack,
+	IsSpellInRange,
+	IsSpellKnown,
+	UnitPower,
+	UnitClass,
+	GetShapeshiftForm,
+	UnitCastingInfo,
+	UnitChannelInfo,
 	tContains,
 	random,
 	sin,
 	cos,
-	unitHealth,
+	UnitHealth,
 	sqrt,
 	tremove,
 	tinsert,
-	strafeLeftStart,
-	strafeLeftStop =
-	getSpellCooldown,
-	getTime,
-	getSpellInfo,
-	getNetStats,
+	StrafeLeftStart,
+	StrafeLeftStop =
+	GetSpellCooldown,
+	GetTime,
+	GetSpellInfo,
+	GetNetStats,
 	tonumber,
-	unitIsDeadOrGhost,
-	unitCanAttack,
-	isSpellInRange,
-	isSpellKnown,
-	unitPower,
-	unitClass,
-	getShapeshiftForm,
-	unitCastingInfo,
-	unitChannelInfo,
+	UnitIsDeadOrGhost,
+	UnitCanAttack,
+	IsSpellInRange,
+	IsSpellKnown,
+	UnitPower,
+	UnitClass,
+	GetShapeshiftForm,
+	UnitCastingInfo,
+	UnitChannelInfo,
 	tContains,
 	random,
 	sin,
 	cos,
-	unitHealth,
+	UnitHealth,
 	sqrt,
 	tremove,
 	tinsert,
-	strafeLeftStart,
-	strafeLeftStop
+	StrafeLeftStart,
+	StrafeLeftStop
 
 ni.spell = {
 	queue = {},
@@ -60,10 +60,10 @@ ni.spell = {
 		if tonumber(id) == nil then
 			id = ni.spell.id(id)
 		end
-		if id > 0 and isSpellKnown(id) then
-			local start, duration = getSpellCooldown(id)
+		if id > 0 and IsSpellKnown(id) then
+			local start, duration = GetSpellCooldown(id)
 			if (start > 0 and duration > 0) then
-				return start + duration - getTime(), true
+				return start + duration - GetTime(), true
 			else
 				return 0, false
 			end
@@ -72,7 +72,7 @@ ni.spell = {
 		end
 	end,
 	gcd = function()
-		local _, d = getSpellCooldown(61304)
+		local _, d = GetSpellCooldown(61304)
 		return d ~= 0
 	end,
 	available = function(id, stutter)
@@ -90,11 +90,11 @@ ni.spell = {
 
 		local result = false
 
-		if id ~= nil and id ~= 0 and isSpellKnown(id) then
-			local name, _, _, cost, _, powertype = getSpellInfo(id)
+		if id ~= nil and id ~= 0 and IsSpellKnown(id) then
+			local name, _, _, cost, _, powertype = GetSpellInfo(id)
 			if
 				name and
-					((powertype == -2 and unitHealth("player") >= cost) or (powertype >= 0 and unitPower("player", powertype) >= cost)) and
+					((powertype == -2 and UnitHealth("player") >= cost) or (powertype >= 0 and UnitPower("player", powertype) >= cost)) and
 					ni.spell.cd(id) == 0
 			 then
 				result = true
@@ -103,7 +103,7 @@ ni.spell = {
 		return result
 	end,
 	castTime = function(spell)
-		return select(7, getSpellInfo(spell)) / 1000 + select(3, getNetStats()) / 1000
+		return select(7, GetSpellInfo(spell)) / 1000 + select(3, GetNetStats()) / 1000
 	end,
 	cast = function(...)
 		local i, t = ...
@@ -199,8 +199,8 @@ ni.spell = {
 		ni.functions.stopCasting()
 	end,
 	stopChanneling = function()
-		strafeLeftStart()
-		strafeLeftStop()
+		StrafeLeftStart()
+		StrafeLeftStop()
 	end,
 	loS = function(...)
 		local t = ...
@@ -226,13 +226,13 @@ ni.spell = {
 			end
 		end
 
-		local name, _, _, cost, _, powertype = getSpellInfo(spellid)
+		local name, _, _, cost, _, powertype = GetSpellInfo(spellid)
 
 		if
-			ni.unit.exists(t) and ((not friendly and (not unitIsDeadOrGhost(t) and unitCanAttack("player", t) == 1)) or friendly) and
-				isSpellInRange(name, t) == 1 and
-				isSpellKnown(spellid) and
-				unitPower("player", powertype) >= cost and
+			ni.unit.exists(t) and ((not friendly and (not UnitIsDeadOrGhost(t) and UnitCanAttack("player", t) == 1)) or friendly) and
+				IsSpellInRange(name, t) == 1 and
+				IsSpellKnown(spellid) and
+				UnitPower("player", powertype) >= cost and
 				((facing and ni.player.isFacing(t)) or not facing) and
 				((los and ni.spell.loS(t)) or not los)
 		 then
@@ -242,15 +242,15 @@ ni.spell = {
 		return false
 	end,
 	getInterrupt = function()
-		local _, class = unitClass("player")
+		local _, class = UnitClass("player")
 		local interruptSpell = 0
 
 		if class == "SHAMAN" then
 			interruptSpell = 57994
 		elseif class == "WARRIOR" then
-			if getShapeshiftForm() == 3 then
+			if GetShapeshiftForm() == 3 then
 				interruptSpell = 6552
-			elseif getShapeshiftForm() == 2 then
+			elseif GetShapeshiftForm() == 2 then
 				interruptSpell = 72
 			end
 		elseif class == "PRIEST" then
@@ -263,7 +263,7 @@ ni.spell = {
 			interruptSpell = 2139
 		elseif class == "HUNTER" then
 			interruptSpell = 34490
-		elseif class == "WARLOCK" and isSpellKnown(19647, true) then
+		elseif class == "WARLOCK" and IsSpellKnown(19647, true) then
 			interruptSpell = 19647
 		end
 
@@ -282,9 +282,9 @@ ni.spell = {
 		return math.random(40, 60)
 	end,
 	shouldInterrupt = function(t)
-		local interruptPercent = ni.spell.getPercent()
-		local castName, _, _, _, castStartTime, castEndTime, _, _, castInterruptable = unitCastingInfo(t)
-		local channelName, _, _, _, channelStartTime, channelEndTime, _, _, channelInterruptable = unitChannelInfo(t)
+		local InterruptPercent = ni.spell.getPercent()
+		local castName, _, _, _, castStartTime, castEndTime, _, _, castInterruptable = UnitCastingInfo(t)
+		local channelName, _, _, _, channelStartTime, channelEndTime, _, _, channelInterruptable = UnitChannelInfo(t)
 
 		if channelName ~= nil then
 			castName = channelName
@@ -294,21 +294,21 @@ ni.spell = {
 		end
 
 		if castName ~= nil then
-			if unitCanAttack("player", t) == nil then
+			if UnitCanAttack("player", t) == nil then
 				return false
 			end
 			local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
 			local castTime = castEndTime - castStartTime
 			local currentPercent = timeSinceStart / castTime * 100000
 
-			if (currentPercent < interruptPercent) then
+			if (currentPercent < InterruptPercent) then
 				return false
 			end
 
 			local interruptSpell = ni.spell.getInterrupt()
 
 			if interruptSpell ~= 0 then
-				if ni.spell.cd(interruptSpell) > 0 or not isSpellInRange(GetSpellInfo(interruptSpell), t) == 1 then
+				if ni.spell.cd(interruptSpell) > 0 or not IsSpellInRange(GetSpellInfo(interruptSpell), t) == 1 then
 					return false
 				end
 			else

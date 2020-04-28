@@ -1,19 +1,19 @@
-local isLeftShiftKeyDown,
-	getCurrentKeyBoardFocus,
-	getTime,
-	isLeftControlKeyDown,
-	isLeftAltKeyDown,
-	isRightShiftKeyDown,
-	isRightControlKeyDown,
-	isRightAltKeyDown =
-	isLeftShiftKeyDown,
-	getCurrentKeyBoardFocus,
-	getTime,
-	isLeftControlKeyDown,
-	isLeftAltKeyDown,
-	isRightShiftKeyDown,
-	isRightControlKeyDown,
-	isRightAltKeyDown
+local IsLeftShiftKeyDown,
+	GetCurrentKeyBoardFocus,
+	GetTime,
+	IsLeftControlKeyDown,
+	IsLeftAltKeyDown,
+	IsRightShiftKeyDown,
+	IsRightControlKeyDown,
+	IsRightAltKeyDown =
+	IsLeftShiftKeyDown,
+	GetCurrentKeyBoardFocus,
+	GetTime,
+	IsLeftControlKeyDown,
+	IsLeftAltKeyDown,
+	IsRightShiftKeyDown,
+	IsRightControlKeyDown,
+	IsRightAltKeyDown
 
 local togglemod, cdtogglemod, customtogglemod = 0, 0, 0
 
@@ -30,63 +30,63 @@ ni.rotation = {
 		end
 	end,
 	customMod = function()
-		if ni.vars.hotkeys.custom == "Left shift" then
-			if isLeftShiftKeyDown() and not getCurrentKeyBoardFocus() then
+		if ni.vars.hotkeys.custom == "Left Shift" then
+			if IsLeftShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.custom == "Left control" then
-			if isLeftControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.custom == "Left Control" then
+			if IsLeftControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.custom == "Left alt" then
-			if isLeftAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.custom == "Left Alt" then
+			if IsLeftAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.custom == "Right shift" then
-			if isRightShiftKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.custom == "Right Shift" then
+			if IsRightShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.custom == "Right control" then
-			if isRightControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.custom == "Right Control" then
+			if IsRightControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.custom == "Right alt" then
-			if isRightAltKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		end
-	end,
-	cDMod = function()
-		if ni.vars.hotkeys.cd == "Left shift" then
-			if isLeftShiftKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		elseif ni.vars.hotkeys.cd == "Left control" then
-			if isLeftControlKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		elseif ni.vars.hotkeys.cd == "Left alt" then
-			if isLeftAltKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		elseif ni.vars.hotkeys.cd == "Right shift" then
-			if isRightShiftKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		elseif ni.vars.hotkeys.cd == "Right control" then
-			if isRightControlKeyDown() and not getCurrentKeyBoardFocus() then
-				return true
-			end
-		elseif ni.vars.hotkeys.cd == "Right alt" then
-			if isRightAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.custom == "Right Alt" then
+			if IsRightAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
 		end
 	end,
-	cDToggle = function()
+	cdMod = function()
+		if ni.vars.hotkeys.cd == "Left Shift" then
+			if IsLeftShiftKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		elseif ni.vars.hotkeys.cd == "Left Control" then
+			if IsLeftControlKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		elseif ni.vars.hotkeys.cd == "Left Alt" then
+			if IsLeftAltKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		elseif ni.vars.hotkeys.cd == "Right Shift" then
+			if IsRightShiftKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		elseif ni.vars.hotkeys.cd == "Right Control" then
+			if IsRightControlKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		elseif ni.vars.hotkeys.cd == "Right Alt" then
+			if IsRightAltKeyDown() and not GetCurrentKeyBoardFocus() then
+				return true
+			end
+		end
+	end,
+	cdToggle = function()
 		if ni.vars.profiles.enabled then
-			if ni.rotation.cdmod() and getTime() - cdtogglemod > 0.5 then
-				cdtogglemod = getTime()
+			if ni.rotation.cdMod() and GetTime() - cdtogglemod > 0.5 then
+				cdtogglemod = GetTime()
 				if ni.vars.combat.cd then
 					ni.vars.combat.cd = false
 					ni.floatingText:message("Cooldown toggle: \124cffff0000Disabled")
@@ -97,41 +97,41 @@ ni.rotation = {
 			end
 		end
 	end,
-	aoEMod = function()
-		if ni.vars.hotkeys.aoe == "Left shift" then
-			if isLeftShiftKeyDown() and not getCurrentKeyBoardFocus() then
+	aoeMod = function()
+		if ni.vars.hotkeys.aoe == "Left Shift" then
+			if IsLeftShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.aoe == "Left control" then
-			if isLeftControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.aoe == "Left Control" then
+			if IsLeftControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.aoe == "Left alt" then
-			if isLeftAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.aoe == "Left Alt" then
+			if IsLeftAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.aoe == "Right shift" then
-			if isRightShiftKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.aoe == "Right Shift" then
+			if IsRightShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.aoe == "Right control" then
-			if isRightControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.aoe == "Right Control" then
+			if IsRightControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.aoe == "Right alt" then
-			if isRightAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.aoe == "Right Alt" then
+			if IsRightAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
 		end
 	end,
-	aoEToggle = function()
+	aoeToggle = function()
 		if (ni.vars.profiles.enabled == false or ni.vars.combat.aoe == false) and ni.frames.notification:isShown() then
 			ni.frames.notification:hide()
 		end
-		if ni.rotation.aoEMod() and getTime() - togglemod > 0.5 and ni.vars.profiles.enabled then
-			togglemod = getTime()
+		if ni.rotation.aoEMod() and GetTime() - togglemod > 0.5 and ni.vars.profiles.enabled then
+			togglemod = GetTime()
 			if ni.vars.combat.aoe == false then
-				ni.message("Area of effect enabled")
+				ni.message("Area of Effect Enabled")
 				ni.vars.combat.aoe = true
 			elseif ni.vars.combat.aoe == true then
 				ni.frames.notification:hide()
@@ -140,28 +140,28 @@ ni.rotation = {
 		end
 	end,
 	stopMod = function()
-		if ni.vars.hotkeys.pause == "Left shift" then
-			if isLeftShiftKeyDown() and not getCurrentKeyBoardFocus() then
+		if ni.vars.hotkeys.pause == "Left Shift" then
+			if IsLeftShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.pause == "Left control" then
-			if isLeftControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.pause == "Left Control" then
+			if IsLeftControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.pause == "Left alt" then
-			if isLeftAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.pause == "Left Alt" then
+			if IsLeftAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.pause == "Right shift" then
-			if isRightShiftKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.pause == "Right Shift" then
+			if IsRightShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.pause == "Right control" then
-			if isRightControlKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.pause == "Right Control" then
+			if IsRightControlKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
-		elseif ni.vars.hotkeys.pause == "Right alt" then
-			if isRightAltKeyDown() and not getCurrentKeyBoardFocus() then
+		elseif ni.vars.hotkeys.pause == "Right Alt" then
+			if IsRightAltKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true
 			end
 		end

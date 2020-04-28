@@ -1,15 +1,15 @@
-local getRuneCooldown, getRuneType, getTime = getRuneCooldown, getRuneType, getTime
+local GetRuneCooldown, GetRuneType, GetTime = GetRuneCooldown, GetRuneType, GetTime
 
 ni.rune = {
 	available = function()
-		local s, d, i = getRuneCooldown()
+		local s, d, i = GetRuneCooldown()
 
 		if i == true then
 			return 0
 		end
 
 		if s ~= 0 then
-			return s + d - getTime()
+			return s + d - GetTime()
 		else
 			return 0
 		end
@@ -19,9 +19,9 @@ ni.rune = {
 		local runesOffCd = 0
 
 		for i = 1, 6 do
-			if getRuneType(i) == rune and select(3, getRuneCooldown(i)) == false then
+			if GetRuneType(i) == rune and select(3, GetRuneCooldown(i)) == false then
 				runesOnCd = runesOnCd + 1
-			elseif getRuneType(i) == rune and select(3, getRuneCooldown(i)) == true then
+			elseif GetRuneType(i) == rune and select(3, GetRuneCooldown(i)) == true then
 				runesOffCd = runesOffCd + 1
 			end
 		end

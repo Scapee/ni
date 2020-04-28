@@ -1,9 +1,9 @@
-local createFrame, getFramerate, rawset = createFrame, getFramerate, rawset
+local CreateFrame, GetFramerate, rawset = CreateFrame, GetFramerate, rawset
 
-ni.frames.objectManager = createFrame("frame")
+ni.frames.objectManager = CreateFrame("frame")
 ni.frames.objectManager_OnUpdate = function(self, elapsed)
 	if ni.objects ~= nil and ni.functions.getOM ~= nil then
-		local throttle = 1 / getFramerate()
+		local throttle = 1 / GetFramerate()
 		self.st = elapsed + (self.st or 0)
 		if self.st > throttle then
 			self.st = 0

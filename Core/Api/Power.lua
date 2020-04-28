@@ -1,4 +1,4 @@
-local unitPower, unitPowerMax = unitPower, unitPowerMax
+local UnitPower, UnitPowerMax = UnitPower, UnitPowerMax
 
 ni.power = {
 	types = {
@@ -24,20 +24,20 @@ ni.power = {
 			type = ni.power.types[type]
 		end
 
-		return 100 * unitPower(t, type) / unitPower(t, type)
+		return 100 * UnitPower(t, type) / UnitPower(t, type)
 	end,
 	max = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
 
-		return unitPowerMax(t, type)
+		return UnitPowerMax(t, type)
 	end,
 	isMax = function(t, type)
 		if tonumber(type) == nil then
 			type = ni.power.types[type]
 		end
 
-		return unitPower(t, type) == unitPowerMax(t, type)
+		return UnitPower(t, type) == UnitPowerMax(t, type)
 	end
 }
