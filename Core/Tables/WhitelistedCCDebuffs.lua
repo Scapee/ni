@@ -1,1 +1,0 @@
-ni.tables.whitelistedCCDebuffs = {}

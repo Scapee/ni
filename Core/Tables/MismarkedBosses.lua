@@ -1,1 +1,1 @@
-ni.tables.mismarkedBosses = {}
+ni.tables.mismarkedbosses = {}

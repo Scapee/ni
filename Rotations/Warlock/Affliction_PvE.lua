@@ -1,4 +1,4 @@
-ni.utils.LoadFile("Rotations/Data/brajevicm_Data.lua")
+ni.utils.loadfile("Rotations/Data/brajevicm_Data.lua")
 
 local rawset, hello = rawset, hello -- Loaded from file above
 

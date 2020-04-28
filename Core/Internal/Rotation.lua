@@ -124,7 +124,7 @@ ni.rotation = {
 		end
 		return false;
 	end,
-	aoeToggle = function()
+	aoetoggle = function()
 		if (ni.vars.profiles.enabled == false or ni.vars.combat.aoe == false) and ni.frames.notification:IsShown() then
 			ni.frames.notification:Hide()
 		end
@@ -139,7 +139,7 @@ ni.rotation = {
 			end
 		end
 	end,
-	stopMod = function()
+	stopmod = function()
 		if ni.vars.hotkeys.pause == "Left Shift" then
 			if IsLeftShiftKeyDown() and not GetCurrentKeyBoardFocus() then
 				return true

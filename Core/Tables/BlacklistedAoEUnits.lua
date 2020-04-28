@@ -1,1 +1,1 @@
-ni.tables.blacklistedAoEUnits = {}
+ni.tables.blacklistedaoeunits = {}

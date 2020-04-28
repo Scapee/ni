@@ -1,14 +1,11 @@
-local UnitName, UnitGUID, UnitPower, UnitPowerMax, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAttack =
+local UnitName, UnitGUID, UnitAffectingCombat, GetTime, UnitCanAssist, UnitCanAttack =
 	UnitName,
 	UnitGUID,
-	UnitPower,
-	UnitPowerMax,
 	UnitAffectingCombat,
 	GetTime,
 	UnitCanAssist,
 	UnitCanAttack
 
-	
 local objectsetup = {}
 local cache = {}
 cache.__index = {
@@ -113,7 +110,7 @@ function ni.objectsetup:create(objguid, objtype, objname)
 		return ni.unit.hp(o.guid)
 	end
 	function o:power(t)
-		return ni.power.currentpercent(o.guid, t);
+		return ni.power.currentpercent(o.guid, t)
 	end
 	function o:unit()
 		return o.type == 3
@@ -122,7 +119,7 @@ function ni.objectsetup:create(objguid, objtype, objname)
 		return o.type == 4
 	end
 	function o:powermax(t)
-		return ni.power.max(o.guid, t);
+		return ni.power.max(o.guid, t)
 	end
 	function o:canattack(tar)
 		local t = true and tar or "player"
@@ -166,15 +163,15 @@ function ni.objectsetup:create(objguid, objtype, objname)
 		return ni.unit.distance(o.guid, t)
 	end
 	function o:range(tar)
-		local dist = o:distance(tar);
-		return (dist < 40) and true or false;
+		local dist = o:distance(tar)
+		return (dist < 40) and true or false
 	end
 	function o:creator()
 		return ni.unit.creator(o.guid)
 	end
 	function o:target()
 		local t = select(6, ni.unit.info(o.guid))
-		return t;
+		return t
 	end
 	function o:location()
 		local x, y, z, r = ni.unit.info(o.guid)

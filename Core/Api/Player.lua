@@ -157,7 +157,7 @@ ni.player = {
 		end
 	end,
 	canheal = function(target)
-		if UnitExits(target) then
+		if UnitExists(target) then
 			local heal;
 			if class == "PALADIN" then
 				heal = "Holy Light";

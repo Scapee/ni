@@ -30,13 +30,13 @@ ni.vars = {
 	combat = {
 		started = false,
 		time = 0,
-		isMelee = false,
+		melee = false,
 		cd = false,
 		aoe = false,
 		casting = false
 	},
 	interrupts = {
-		whiteListed = {},
-		blackListed = {}
+		whitelisted = {},
+		blacklisted = {}
 	}
 }

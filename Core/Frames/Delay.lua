@@ -4,11 +4,13 @@ ni.frames.delay = CreateFrame("Frame")
 ni.frames.delay_OnUpdate = function(self, elapsed)
 	local count = #ni.delays
 	local i = 1
+
 	while i <= count do
 		local waitRecord = tremove(ni.delays, i)
 		local d = tremove(waitRecord, 1)
 		local f = tremove(waitRecord, 1)
 		local p = tremove(waitRecord, 1)
+
 		if d > elapsed then
 			tinsert(ni.delays, i, {d - elapsed, f, p})
 			i = i + 1
