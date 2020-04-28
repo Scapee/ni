@@ -23,7 +23,7 @@ local GetGlyphSocketInfo,
 	UnitExists,
 	IsSpellInRange
 
-local _, class = UnitClass("player");
+local _, class = UnitClass("player")
 
 ni.player = {
 	debufftype = function(string)
@@ -106,93 +106,93 @@ ni.player = {
 		for i = 1, 6 do
 			if GetGlyphSocketInfo(i) then
 				if select(3, GetGlyphSocketInfo(i)) == glyphid then
-					return true;
+					return true
 				end
 			end
 		end
-		return false;
+		return false
 	end,
 	hasitem = function(itemid)
 		for b = 0, 4 do
 			for s = 1, GetContainerNumSlots(b) do
 				if GetContainerItemID(b, s) == itemid then
-					return true;
+					return true
 				end
 			end
 		end
-		return false;
+		return false
 	end,
 	itemequipped = function(id)
 		for i = 1, 19 do
 			if GetInventoryItemID("player", i) == id then
-				return true;
+				return true
 			end
 		end
-		return false;
+		return false
 	end,
 	slotcd = function(slotnum)
 		if GetItemSpell(GetInventoryItemID("player", slotnum)) == nil then
-			return true;
+			return true
 		end
-		local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", slotnum));
+		local start, duration, enable = GetItemCooldown(GetInventoryItemID("player", slotnum))
 		if (start > 0 and duration > 0) then
-			return true;
+			return true
 		else
-			return false;
+			return false
 		end
 	end,
 	itemcd = function(item)
-		local start, duration, enable = GetItemCooldown(item);
+		local start, duration, enable = GetItemCooldown(item)
 		if (start > 0 and duration > 0) then
-			return start + duration - GetTime();
+			return start + duration - GetTime()
 		end
-		return 0;
+		return 0
 	end,
 	petcd = function(spell)
-		local start, duration, enable = GetSpellCooldown(spell, "pet");
+		local start, duration, enable = GetSpellCooldown(spell, "pet")
 		if (start > 0 and duration > 0) then
-			return start + duration - GetTime();
+			return start + duration - GetTime()
 		else
-			return 0;
+			return 0
 		end
 	end,
 	canheal = function(target)
 		if UnitExists(target) then
-			local heal;
+			local heal
 			if class == "PALADIN" then
-				heal = "Holy Light";
+				heal = "Holy Light"
 			elseif class == "PRIEST" then
-				heal = "Renew";
+				heal = "Renew"
 			elseif class == "DRUID" then
-				heal = "Healing Touch";
+				heal = "Healing Touch"
 			elseif class == "SHAMAN" then
-				heal = "Healing Wave";
+				heal = "Healing Wave"
 			end
 			if heal ~= nil and IsSpellInRange(heal, target) == 1 then
-				return true;
+				return true
 			end
 		end
-		return false;
+		return false
 	end,
 	hasheal = function()
 		if class == "PALADIN" then
-			return true;
+			return true
 		elseif class == "PRIEST" then
-			return true;
+			return true
 		elseif class == "DRUID" then
-			return true;
+			return true
 		elseif class == "SHAMAN" then
-			return true;
+			return true
 		end
-		return false;
+		return false
 	end,
 	ismoving = function()
 		if ni.unit.ismoving("player") or IsFalling() then
 			return true
 		end
-		return false;
+		return false
 	end,
 	hp = function()
-		return ni.unit.hp("player");
+		return ni.unit.hp("player")
 	end
 }
